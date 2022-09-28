@@ -39,11 +39,11 @@ void criaCaminhos(GrafoLA* grafo){
     while(grafo->vertices[end_key].pai == -1){
         printf("%d %d",chave1, chave2);
         if(chave1 != chave2){
-            if(chave1 == START && noArs(grafo, chave1)){
+            if(grafo->vertices[chave1].tipo == START && noArs(grafo, chave1)){
                 insereArestaGrafoLA(grafo, chave1, chave2);
-            }else if(chave2 == END){
+            }else if(grafo->vertices[chave2].tipo == END){
                 insereArestaGrafoLA(grafo, chave1, chave2);
-            }else if(chave2 != START && chave1 != END){
+            }else if(grafo->vertices[chave2].tipo != START && grafo->vertices[chave1].tipo != END){
                 insereArestaGrafoLA(grafo, chave1, chave2);
                 insereArestaGrafoLA(grafo, chave2, chave1);
             }

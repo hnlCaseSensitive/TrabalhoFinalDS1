@@ -19,4 +19,6 @@ void aplicaTipos(GrafoLA* grafo);
 
 void criaCaminhos(GrafoLA* grafo);
 
+int findKey(GrafoLA* grafo, int tipo);
+
 #endif

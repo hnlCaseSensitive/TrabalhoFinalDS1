@@ -19,11 +19,18 @@ GrafoLA *criaGrafoLA(int numVertices){
 
 // Funcao que insere uma aresta em um grafo
 void insereArestaGrafoLA(GrafoLA *grafo, int chave1, int chave2){
+
+   for(ArestaGrafo* arr = grafo->vertices[chave1].lista; arr != NULL; arr = arr->prox){
+      if(arr->chaveDest == chave2){
+         return;
+      }
+   }
+
    ArestaGrafo *arestaAux = (ArestaGrafo*)malloc(sizeof(ArestaGrafo));
    arestaAux->chaveDest = chave2; 
    arestaAux->prox = grafo->vertices[chave1].lista;
    grafo->vertices[chave1].lista = arestaAux;
-   // Em grafos nao-direcionados, ha a insercao da aresta simetrica
+   
 }
 
 // Funcao que imprime vertices e arcos
