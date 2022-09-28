@@ -20,6 +20,8 @@ GrafoLA *criaGrafoLA(int numVertices){
 // Funcao que insere uma aresta em um grafo
 void insereArestaGrafoLA(GrafoLA *grafo, int chave1, int chave2){
 
+   srand(time(NULL));
+
    for(ArestaGrafo* arr = grafo->vertices[chave1].lista; arr != NULL; arr = arr->prox){
       if(arr->chaveDest == chave2){
          return;
@@ -29,6 +31,7 @@ void insereArestaGrafoLA(GrafoLA *grafo, int chave1, int chave2){
    ArestaGrafo *arestaAux = (ArestaGrafo*)malloc(sizeof(ArestaGrafo));
    arestaAux->chaveDest = chave2; 
    arestaAux->prox = grafo->vertices[chave1].lista;
+   arestaAux->distancia = (rand() % 10) + 1;
    grafo->vertices[chave1].lista = arestaAux;
    
 }
