@@ -17,4 +17,6 @@ GrafoLA *restartMap (GrafoLA* grafo);
 
 void aplicaTipos(GrafoLA* grafo);
 
+void criaCaminhos(GrafoLA* grafo);
+
 #endif

@@ -11,6 +11,7 @@ GrafoLA *criaGrafoLA(int numVertices){
    for (chave = 0; chave < numVertices; chave++){
       grafo->vertices[chave].lista = NULL;
       grafo->vertices[chave].tipo = -1;
+      grafo->vertices[chave].pai = -1;
    }
    grafo->numVertices = numVertices;
    return grafo;
