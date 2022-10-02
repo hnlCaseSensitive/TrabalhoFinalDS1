@@ -3,7 +3,7 @@
 
 #include "grafo_la.h"
 
-enum{
+typedef enum{
     ATK = 0,
     HEAL,
     DEF
