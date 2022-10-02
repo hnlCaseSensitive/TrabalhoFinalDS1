@@ -8,26 +8,37 @@ GrafoLA *criaGrafoLA(int numVertices){
    int chave;
    GrafoLA * grafo = (GrafoLA*)malloc(sizeof(GrafoLA));
    grafo->vertices = (NoGrafo*)malloc(sizeof(NoGrafo)*numVertices);
-   for (chave = 0; chave < numVertices; chave++)
+   for (chave = 0; chave < numVertices; chave++){
       grafo->vertices[chave].lista = NULL;
+      grafo->vertices[chave].tipo = -1;
+      grafo->vertices[chave].pai = -1;
+   }
    grafo->numVertices = numVertices;
    return grafo;
 }
 
 // Funcao que insere uma aresta em um grafo
 void insereArestaGrafoLA(GrafoLA *grafo, int chave1, int chave2){
+
+   for(ArestaGrafo* arr = grafo->vertices[chave1].lista; arr != NULL; arr = arr->prox){
+      if(arr->chaveDest == chave2){
+         return;
+      }
+   }
+
    ArestaGrafo *arestaAux = (ArestaGrafo*)malloc(sizeof(ArestaGrafo));
-   arestaAux->chaveDest = chave2; 
+   arestaAux->chaveDest = chave2;
+   arestaAux->distancia = (rand() % 10) + 1; 
    arestaAux->prox = grafo->vertices[chave1].lista;
    grafo->vertices[chave1].lista = arestaAux;
-   // Em grafos nao-direcionados, ha a insercao da aresta simetrica
+   
 }
 
 // Funcao que imprime vertices e arcos
 void imprimeGrafoLA(GrafoLA *grafo){
    int chave;
    for (chave = 0; chave < grafo->numVertices; chave++){
-      printf("%d [%d/%d]\n", chave, grafo->vertices[chave].tEntrada, grafo->vertices[chave].tSaida);
+      printf("%d [%d/%d] %d\n", chave, grafo->vertices[chave].tEntrada, grafo->vertices[chave].tSaida, grafo->vertices[chave].tipo);
       // Mostra distInicio no resultado do BFS
       // printf("%d [%d/%d] %d\n", chave, grafo->vertices[chave].tEntrada, grafo->vertices[chave].tSaida, grafo->vertices[chave].distInicio); 
    }
