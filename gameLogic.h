@@ -1,7 +1,12 @@
 #ifndef GAME_LOGIC_H
 #define GAME_LOGIC_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
 #include "grafo_la.h"
+#include "combate.h"
 
 typedef enum{
     ATK = 0,

@@ -1,10 +1,6 @@
-#include "combate.h"
-#include <time.h>
-#include <stdio.h>
-#include <float.h>
-#include <stdlib.h>
+#include "gameLogic.h"
 #include <string.h>
-#include<unistd.h>
+#include <unistd.h>
 
 inimigo sorteiaInimigo(){
     inimigo aux;

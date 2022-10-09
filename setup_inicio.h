@@ -1,7 +1,7 @@
 #ifndef _SETUP_INICIO_H_
 #define _SETUP_INICIO_H_
 
-#include "combate.h"
+#include "gameLogic.h"
 
 void inicioJogoCombate(playerCombate* player);
 
