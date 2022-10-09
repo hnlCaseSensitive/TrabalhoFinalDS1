@@ -1,4 +1,4 @@
-#include "combate.h"
+#include "setup_inicio.h"
 #include <stdio.h>
 #include <string.h>
 
