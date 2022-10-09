@@ -1,4 +1,4 @@
-#include "setup_inicio.h"
+#include "combate.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -20,7 +20,7 @@ void inicioJogoCombate (playerCombate* player){
     player->arma[2] = acido;
     player->arma[3] = punhos;
 
-    int itemSelecionado = 0; // controla a seleção do item
+    int itemSelecionado = 0; // controla a seleï¿½ï¿½o do item
 
     do {
         // Seleciona o item especial

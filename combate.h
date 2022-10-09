@@ -11,12 +11,12 @@ typedef enum{
 typedef enum{
     HUMANO = 0, // Leva mais dano de acido
     ROBO = 1, // Leva mais dano de eletricidade
-    INSETO = 2 // Leva mais dano de perfuração
+    INSETO = 2 // Leva mais dano de perfuraï¿½ï¿½o
 } tiposInimigo;
 
 typedef struct template_arma{
     int dano; // Dano da arma
-    char desc[128]; // Descrição da arma
+    char desc[128]; // Descriï¿½ï¿½o da arma
     tiposDano tipoDano; // Tipo de dano que a arma da
 } arma;
 
@@ -24,12 +24,12 @@ typedef struct player_stats_combate{
    int vidaMaxima; // O maximo de vida que o jogador pode ter
    int vidaAtual; // A vida atual do jogador
 
-    // NOTA: dependendo de como vamos estruturar o jogo, talvez uma das variáveis acima não será necessária
 
-   arma arma[4]; // A ideia é que em combate, teremos quatro opções de armas
-   char itemEspecial[128]; // Item especial adiquirido no começo do jogo, guardado em char para ser mais facil ler
 
-   // ADICIONAR TRAITS TALVEZ? (talvez em outra struct? Isso separaria o jogador que faz o combate e q faz as interações em dois...)
+   arma arma[4]; // A ideia ï¿½ que em combate, teremos quatro opï¿½ï¿½es de armas
+   char itemEspecial[128]; // Item especial adiquirido no comeï¿½o do jogo, guardado em char para ser mais facil ler
+
+
 } playerCombate;
 
 

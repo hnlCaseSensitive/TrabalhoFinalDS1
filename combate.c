@@ -1,9 +1,10 @@
 #include "combate.h"
-#include "setup_inicio.h"
 #include <time.h>
 #include <stdio.h>
 #include <float.h>
 #include <stdlib.h>
+#include <string.h>
+#include<unistd.h>
 
 inimigo sorteiaInimigo(){
     inimigo aux;
@@ -51,7 +52,7 @@ void combate(playerCombate* player, inimigo inimigo){
     printf ("\nInimigo: %s\n", inimigo.nome);
 
     do {
-        // Imprime opções de arma
+        // Imprime opï¿½ï¿½es de arma
         printf ("\nEscolha a arma para atacar: \n");
 
         // Mostra para o jogador as suas armas
@@ -59,7 +60,7 @@ void combate(playerCombate* player, inimigo inimigo){
             printf ("%d: Dano %d, Tipo %d, Desc: %s\n", i+1, player->arma[i].dano, player->arma[i].tipoDano, player->arma[i].desc);
         }
 
-        // Reseta a seleção de arma e o multiplicador de dano
+        // Reseta a seleï¿½ï¿½o de arma e o multiplicador de dano
         selecaoArma = 0;
         multiplicador = 1;
 
@@ -84,8 +85,8 @@ void combate(playerCombate* player, inimigo inimigo){
         if (strcmp(player->itemEspecial, "MIRA A LASER") == 0)
             printf("\nSua MIRA A LASER garante um tiro certeiro...\n");
 
-        // A propiedade do ataque desarmado é pular o turno do inimigo se ele ta carregando um ataque especial
-        // Também tem 10% de chance de pular 2 turnos pq achei legal colocar
+        // A propiedade do ataque desarmado ï¿½ pular o turno do inimigo se ele ta carregando um ataque especial
+        // Tambï¿½m tem 10% de chance de pular 2 turnos pq achei legal colocar
         if(player->arma[selecaoArma-1].tipoDano == DESARMADO && ataqueCarregadoInimigo > 0){
             cancelaTurnoInimigo++;
             // LUVAS DE BOXE garante que o atordoamento dura 2 turnos
@@ -109,52 +110,48 @@ void combate(playerCombate* player, inimigo inimigo){
 
         sleep(1);
 
-        // Checa se o inimigo não está morto
+        // Checa se o inimigo nï¿½o estï¿½ morto
         if (inimigo.vida <= 0){
 
-        // Inimigo agora ataca, mas se checa primeiro se seu turno não foi cancelado.
-        if (cancelaTurnoInimigo > 0){
+            // Inimigo agora ataca, mas se checa primeiro se seu turno nï¿½o foi cancelado.
+            if (cancelaTurnoInimigo > 0){
 
-            printf("\nO inimigo esta atordoado e nao conseguiu atacar!\n");
-            // O turno só pode ser cancelado quando o inimigo carrega o ataque, se ele ja teve o turno cancelado, se reseta o ataque carregado
-            cancelaTurnoInimigo--;
-            ataqueCarregadoInimigo = 0;
-        } else if (ataqueCarregadoInimigo == 2){
-
-            // Se o inimigo conseguiu carregar o ataque especial até o final ele da 200% de dano
-            player->vidaAtual -= inimigo.dano * 2;
-            printf("\nO inimigo conseguiu completar seu ataque carregado!\nVoce levou %i de dano e esta com %i de vida\n", inimigo.dano * 2, player->vidaAtual);
-            // E se reseta o ataque especial
-            ataqueCarregadoInimigo = 0;
-        } else if (ataqueCarregadoInimigo == 1){
-
-            // Se o inimigo está começando seu ataque especial, se da um aviso ao jogador e se incrementa a variável do ataque especial
-            printf("\nO inimigo esta carregando um ataque especial, expondo seu ponto fraco.\n");
-            ataqueCarregadoInimigo++;
-        } else {
-
-            // Se o inimigo não está atordoado nem fazendo ataque especial se faz um ataque normal
-            player->vidaAtual -= inimigo.dano;
-            printf("\nO inimigo conseguiu acertar seu ataque.\nVoce levou %i de dano e esta com %i de vida\n", inimigo.dano, player->vidaAtual);
-
-            // E, por ultimo, se sorteia se o prox ataque do inimigo será especial. Decidi sortear no final para ele não poder fazer esse ataque no primeiro turno
-            if (inimigo.chancePontoFraco > rand() % 100 && ataqueCarregadoInimigo == 0)
-            ataqueCarregadoInimigo = 1;
-        }
+                printf("\nO inimigo esta atordoado e nao conseguiu atacar!\n");
+                // O turno sï¿½ pode ser cancelado quando o inimigo carrega o ataque, se ele ja teve o turno cancelado, se reseta o ataque carregado
+                cancelaTurnoInimigo--;
+                ataqueCarregadoInimigo = 0;
+            } else {
+            
+                switch(ataqueCarregadoInimigo){
+                    case 1:
+                        printf("\nO inimigo esta carregando um ataque especial, expondo seu ponto fraco.\n");
+                        ataqueCarregadoInimigo++;
+                        break;
+                    case 2:
+                        player->vidaAtual -= inimigo.dano * 2;
+                        printf("\nO inimigo conseguiu completar seu ataque carregado!\nVoce levou %i de dano e esta com %i de vida\n", inimigo.dano * 2, player->vidaAtual);
+                        ataqueCarregadoInimigo = 0;
+                        break;
+                    default:
+                        player->vidaAtual -= inimigo.dano;
+                        printf("\nO inimigo conseguiu acertar seu ataque.\nVoce levou %i de dano e esta com %i de vida\n", inimigo.dano, player->vidaAtual);
+                        if (inimigo.chancePontoFraco > rand() % 100 && ataqueCarregadoInimigo == 0)
+                            ataqueCarregadoInimigo = 1;
+                        break;
+                }
+            
+            }
         }
         sleep(1);
 
-        // Detecta o fim do combate
-        if (inimigo.vida <= 0 || player->vidaAtual <= 0)
-            fimCombate = 1;
+    } while (inimigo.vida <= 0 || player->vidaAtual <= 0);
 
-    } while (fimCombate == 0);
     // Cura especial do item especial SUQUINHO
     if (strcmp(player->itemEspecial, "SUQUINHO") == 0){
         printf("\nVoce toma seu SUQUINHO refrescante... hmmmmmmmm...\n");
-        player->vidaAtual = player->vidaAtual + 7;
+        player->vidaAtual += 7;
     }
     // Ao fim do combate se restaura um pouco de vida do jogador
     if (player->vidaAtual > 0)
-        player->vidaAtual = player->vidaAtual + 25;
+        player->vidaAtual += 25;
 }
