@@ -2,8 +2,8 @@
 #include <string.h>
 #include <unistd.h>
 
-inimigo sorteiaInimigo(){
-    inimigo aux;
+Inimigo* sorteiaInimigo(){
+    Inimigo *aux = (Inimigo*) malloc(sizeof(Inimigo));
     // Sortei um numero de 1 a 100
     int sorteio = 0;
 
@@ -14,30 +14,56 @@ inimigo sorteiaInimigo(){
     //printf ("sorteio: %i", sorteio);
     // E seleciona um inimigo baseado no numero sorteado
     if (sorteio > 90){
-        aux.dano = 10;
-        aux.vida = 100;
-        aux.tipo = INSETO;
-        strcpy(aux.nome, "inseto generico");
-        aux.chancePontoFraco = 35;
+        aux->dano = 10;
+        aux->vida = 100;
+        aux->tipo = INSETO;
+        strcpy(aux->nome, "inseto generico");
+        aux->chancePontoFraco = 35;
     }
     else if (sorteio > 80){
-        aux.dano = 10;
-        aux.vida = 100;
-        aux.tipo = ROBO;
-        strcpy(aux.nome, "robo generico");
-        aux.chancePontoFraco = 35;
+        aux->dano = 10;
+        aux->vida = 100;
+        aux->tipo = ROBO;
+        strcpy(aux->nome, "robo generico");
+        aux->chancePontoFraco = 35;
     }
     else {
-        aux.dano = 10;
-        aux.vida = 100;
-        aux.tipo = HUMANO;
-        strcpy(aux.nome, "humano generico");
-        aux.chancePontoFraco = 35;
+        aux->dano = 10;
+        aux->vida = 100;
+        aux->tipo = HUMANO;
+        strcpy(aux->nome, "humano generico");
+        aux->chancePontoFraco = 35;
     }
     return aux;
 }
 
-void combate(playerCombate* player, inimigo inimigo){
+void escolheArma(Player *player, int escolha)
+{
+    printf("Escolha da arma\n");
+    // arma.tipoDano
+    switch(escolha)
+    {
+        case ACIDO:
+        {
+            player->armaAtual = player->arma[ACIDO]; 
+        } break;
+        case ELETRICO:
+        {
+            player->armaAtual = player->arma[ELETRICO]; 
+        } break;
+        case PERFURACAO:
+        {
+            player->armaAtual = player->arma[PERFURACAO]; 
+        } break;
+        case DESARMADO:
+        {
+            player->armaAtual = player->arma[DESARMADO]; 
+        } break;
+    }
+    
+}
+
+void combate(Player* player, Inimigo *inimigo){
     int fimCombate = 0,
     multiplicador = 1,
     selecaoArma = 0,
@@ -45,7 +71,7 @@ void combate(playerCombate* player, inimigo inimigo){
     ataqueCarregadoInimigo = 0,
     i = 0;
 
-    printf ("\nInimigo: %s\n", inimigo.nome);
+    //printf ("\nInimigo: %s\n", inimigo->nome);
 
     do {
         // Imprime op��es de arma
@@ -75,7 +101,7 @@ void combate(playerCombate* player, inimigo inimigo){
         }
 
         // Agora com a arma selecionada podemos aplicar o multiplicador
-        if(player->arma[selecaoArma-1].tipoDano == inimigo.tipo || strcmp(player->itemEspecial, "MIRA A LASER") == 0)
+        if(player->arma[selecaoArma-1].tipoDano == inimigo->tipo || strcmp(player->itemEspecial, "MIRA A LASER") == 0)
             multiplicador += 2;
         // Texto de feedback da mira
         if (strcmp(player->itemEspecial, "MIRA A LASER") == 0)
@@ -100,14 +126,14 @@ void combate(playerCombate* player, inimigo inimigo){
             multiplicador += 2;
 
         // Tira vida do inimigo
-        inimigo.vida -= player->arma[selecaoArma-1].dano * multiplicador;
+        inimigo->vida -= player->arma[selecaoArma-1].dano * multiplicador;
 
-        printf ("Ataque deu %d de dano, inimigo esta com %d de vida", player->arma[selecaoArma-1].dano * multiplicador, inimigo.vida);
+        printf ("Ataque deu %d de dano, inimigo esta com %d de vida", player->arma[selecaoArma-1].dano * multiplicador, inimigo->vida);
 
         sleep(1);
 
         // Checa se o inimigo n�o est� morto
-        if (inimigo.vida > 0){
+        if (inimigo->vida > 0){
 
             // Inimigo agora ataca, mas se checa primeiro se seu turno n�o foi cancelado.
             if (cancelaTurnoInimigo > 0){
@@ -124,23 +150,23 @@ void combate(playerCombate* player, inimigo inimigo){
                         ataqueCarregadoInimigo++;
                         break;
                     case 2:
-                        player->vidaAtual -= inimigo.dano * 2;
-                        printf("\nO inimigo conseguiu completar seu ataque carregado!\nVoce levou %i de dano e esta com %i de vida\n", inimigo.dano * 2, player->vidaAtual);
+                        player->vidaAtual -= inimigo->dano * 2;
+                        printf("\nO inimigo conseguiu completar seu ataque carregado!\nVoce levou %i de dano e esta com %i de vida\n", inimigo->dano * 2, player->vidaAtual);
                         ataqueCarregadoInimigo = 0;
                         break;
                     default:
-                        player->vidaAtual -= inimigo.dano;
-                        printf("\nO inimigo conseguiu acertar seu ataque.\nVoce levou %i de dano e esta com %i de vida\n", inimigo.dano, player->vidaAtual);
-                        if (inimigo.chancePontoFraco > rand() % 100 && ataqueCarregadoInimigo == 0)
+                        player->vidaAtual -= inimigo->dano;
+                        printf("\nO inimigo conseguiu acertar seu ataque.\nVoce levou %i de dano e esta com %i de vida\n", inimigo->dano, player->vidaAtual);
+                        if (inimigo->chancePontoFraco > rand() % 100 && ataqueCarregadoInimigo == 0)
                             ataqueCarregadoInimigo = 1;
                         break;
                 }
             
             }
         }
-        sleep(1);
+        sleep(0.5);
 
-    } while (inimigo.vida > 0 && player->vidaAtual > 0);
+    } while (inimigo->vida > 0 && player->vidaAtual > 0);
 
     // Cura especial do item especial SUQUINHO
     if (strcmp(player->itemEspecial, "SUQUINHO") == 0){

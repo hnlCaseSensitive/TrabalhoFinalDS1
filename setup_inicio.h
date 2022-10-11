@@ -3,10 +3,14 @@
 
 #include "gameLogic.h"
 
-void inicioJogoCombate(playerCombate* player);
+void inicioJogoCombate(Player* player);
 
-void statusPlayer(playerCombate player);
+void statusPlayer(Player player);
 
-void statusInimigo(inimigo inimigo);
+void statusInimigo(Inimigo inimigo);
+
+void selecionaItem(int input, Player*);
+
+void criaJogador(Player*);
 
 #endif
