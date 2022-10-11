@@ -9,4 +9,8 @@ void statusPlayer(playerCombate player);
 
 void statusInimigo(inimigo inimigo);
 
+void selecionaItem(int input, playerCombate*);
+
+void criaJogador(playerCombate*);
+
 #endif

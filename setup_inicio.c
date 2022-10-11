@@ -1,6 +1,7 @@
 #include "setup_inicio.h"
 #include <string.h>
 
+
 void inicioJogoCombate (playerCombate* player){
 
     // Inicializando hp
@@ -19,7 +20,7 @@ void inicioJogoCombate (playerCombate* player){
     player->arma[2] = acido;
     player->arma[3] = punhos;
 
-    int itemSelecionado = 0; // controla a sele��o do item
+    /*int itemSelecionado = 0; // controla a sele��o do item
 
     do {
         // Seleciona o item especial
@@ -33,6 +34,7 @@ void inicioJogoCombate (playerCombate* player){
         printf ("4: FACA\n");
 
         scanf ("%i", &itemSelecionado);
+        
         // Switch q coloca o item no lugar certo
         switch (itemSelecionado){
 
@@ -58,8 +60,57 @@ void inicioJogoCombate (playerCombate* player){
 
         }
 
-    } while(itemSelecionado <= 0 || itemSelecionado >= 6);
+    } while(itemSelecionado <= 0 || itemSelecionado >= 6);*/
 
+}
+
+void criaJogador(playerCombate *player)
+{
+    // Inicializando hp
+    player->vidaAtual = 100;
+    player->vidaMaxima = 100;
+
+    // Declarando as armas do jogador
+    arma acido = {.dano = 10, .desc = "Arma de acido", .tipoDano = ACIDO};
+    arma eletrico = {.dano = 10, .desc = "Arma eletrica", .tipoDano = ELETRICO};
+    arma perfuracao = {.dano = 10, .desc = "Arma de perfuracao", .tipoDano = PERFURACAO};
+    arma punhos = {.dano = 10, .desc = "Ataque desarmado", .tipoDano = DESARMADO};
+
+    // Realmente dando as armas usando o vetor
+    player->arma[0] = perfuracao;
+    player->arma[1] = eletrico;
+    player->arma[2] = acido;
+    player->arma[3] = punhos;
+    
+}
+
+void selecionaItem(int input, playerCombate *player)
+{
+    
+    switch (input){
+
+    case 0:
+        strcpy (player->itemEspecial, "LUVAS DE BOXE");
+        break;
+
+    case 1:
+        strcpy (player->itemEspecial, "MIRA A LASER");
+        break;
+
+    case 2:
+        strcpy (player->itemEspecial, "SUQUINHO");
+        break;
+
+    case 3:
+        strcpy (player->itemEspecial, "FACA");
+        break;
+
+    case 5:
+        strcpy (player->itemEspecial, "DELETE KEY");
+        break;
+
+    }
+    printf("player->itemespecial: %s\n", player->itemEspecial);
 }
 
 void statusPlayer(playerCombate player){
