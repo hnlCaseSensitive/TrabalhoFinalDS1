@@ -107,7 +107,7 @@ void combate(playerCombate* player, inimigo inimigo){
         sleep(1);
 
         // Checa se o inimigo n�o est� morto
-        if (inimigo.vida <= 0){
+        if (inimigo.vida > 0){
 
             // Inimigo agora ataca, mas se checa primeiro se seu turno n�o foi cancelado.
             if (cancelaTurnoInimigo > 0){
@@ -140,7 +140,7 @@ void combate(playerCombate* player, inimigo inimigo){
         }
         sleep(1);
 
-    } while (inimigo.vida <= 0 || player->vidaAtual <= 0);
+    } while (inimigo.vida > 0 && player->vidaAtual > 0);
 
     // Cura especial do item especial SUQUINHO
     if (strcmp(player->itemEspecial, "SUQUINHO") == 0){

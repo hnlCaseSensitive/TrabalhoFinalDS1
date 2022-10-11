@@ -7,6 +7,7 @@
 
 #include "grafo_la.h"
 #include "combate.h"
+#include "setup_inicio.h"
 
 typedef enum{
     ATK = 0,
