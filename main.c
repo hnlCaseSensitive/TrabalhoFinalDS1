@@ -1,7 +1,7 @@
 
 #include "raylib.h"
 #include "setup_inicio.h"
-
+#include <unistd.h>
 #include "gui.h"
 
 int main(void)
@@ -11,7 +11,8 @@ int main(void)
     InitWindow(screenWidth, screenHeight, "jogo -  basic window");
     SetTargetFPS(60); 
     
-    player = (playerCombate*) malloc(sizeof(playerCombate));
+    player = (Player*) malloc(sizeof(Player));
+    foe = (Inimigo*) malloc(sizeof(Inimigo));
     Mapa = createMap();
 
     
@@ -20,7 +21,6 @@ int main(void)
     {
         // Update
         //----------------------------------------------------------------------------------
-        // TODO: Update your variables here
         Update_Window();
         //----------------------------------------------------------------------------------
         // Draw
@@ -29,7 +29,6 @@ int main(void)
             ClearBackground(RAYWHITE);
             Draw_Window();
         EndDrawing();
-        //----------------------------------------------------------------------------------
     }
 
     // De-Initialization
@@ -47,39 +46,39 @@ void Draw_Window()
         case TITLE:
         {
             DrawRectangle(0, 0, screenWidth, screenHeight, GREEN);
-            DrawText("TITLE SCREEN", 20, 20, 40, DARKGREEN);
-            // width, height
+            DrawText("DUNGEON CRAWLER", 20, 20, 40, DARKGREEN);
             DrawRectangle(150, 100, 300, 50, corRetanguloPlay); DrawText("START", 180, 120, 20, WHITE);
             DrawRectangle(150, 150, 300, 50, corRetanguloExit); DrawText("EXIT", 180, 160, 20, WHITE);
         } break;
         case GAMEPLAY:
         {
             DrawRectangle(0, 0, screenWidth, screenHeight, PURPLE);
-            
-            
+   
 
-            
-            if(menuArmas>0) {
+
+            if (IsKeyDown(KEY_TAB)) { // so testando coisas
+                DrawRectangle(200, 200, screenWidth/4, screenHeight/5, YELLOW); DrawText("Vida", 200, 0, 20, MAROON);
+            }
+
+            // TODO
+            if (emCombate>0) {
+                DrawRectangle(0, 0, screenWidth, screenHeight/4, GREEN); DrawText("INIMIGO!!!", 20, 20, 40, DARKGREEN);
+                currentScreen = COMBATE;
+            }
+        } break;
+        case COMBATE:
+        {
+            //printf("Tela do combate\n");
+            if(menuArmas>0) { //abre menu p escolher arma
                 DrawRectangle(0, 0, screenWidth/4, screenHeight/5, corRetanguloArma1);
                 DrawRectangle(200, 0, screenWidth/4, screenHeight/5, corRetanguloArma2);
                 DrawRectangle(400, 0, screenWidth/4, screenHeight/5, corRetanguloArma3);
                 DrawRectangle(600, 0, screenWidth/4, screenHeight/5, corRetanguloArma4);
             }
-            
-
-
-            if (IsKeyDown(KEY_TAB)) {
-                DrawRectangle(200, 200, screenWidth/4, screenHeight/5, YELLOW); DrawText("Vida", 200, 0, 20, MAROON);
-            }
-
-            // ARRUMAR
-            if (emCombate>0) {
-                DrawRectangle(0, 0, screenWidth, screenHeight/4, GREEN); DrawText("COMBATE", 20, 20, 40, DARKGREEN);
-            }
-
-            
-            
-
+            //DrawRectangle(0, 0, screenWidth, screenHeight, GREEN);
+            DrawText("COMBATE (f pra voltar)", 20, 20, 40, DARKGREEN);
+            if (!emCombate) currentScreen = GAMEPLAY;
+            if (IsKeyPressed(KEY_F)) currentScreen = GAMEPLAY;
         } break;
         
         case ITEM_ESPECIAL:
@@ -116,9 +115,6 @@ void Update_Window()
     {
         case TITLE:
         {
-            // TODO: Update TITLE screen variables here!
-            
-            // Press enter to change to GAMEPLAY screen
             switch(menuSelection)
             {
                 case PLAY:
@@ -143,11 +139,6 @@ void Update_Window()
                     }
                     break;
             }
-            /*if (IsKeyPressed(KEY_ENTER) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
-            {
-                currentScreen = GAMEPLAY;
-            }*/
-            
         } break;
         
         case GAMEPLAY:
@@ -160,30 +151,36 @@ void Update_Window()
             }
             /* mapa */
             
-            if (IsKeyPressed(KEY_W)) {
-                int chave;
-                for (chave = 0; chave < Mapa->numVertices; chave++){
-                    printf("nodo atual: %d\n", chave);
-                    printf("pode ir para:\n");
-                    for (ArestaGrafo *arestaAux = Mapa->vertices[chave].lista; arestaAux != NULL; arestaAux = arestaAux->prox){
-                        printf("(%d,%d)\n", chave, arestaAux->chaveDest);
-                    }     
-                }
-
-            }
-            
-            
             if (IsKeyPressed(KEY_C)) {emCombate*=-1; } // TEMP
-            
-            if (IsKeyPressed(KEY_S)) {foe = sorteiaInimigo(); printf("inimigo sorteado\n");}
-            
+                        
             if (emCombate>0) {
-                
-                combate(player,foe);
+                printf("combm\n");
+                foe = sorteiaInimigo();
+                printf("Inimigo encontrado:%s\n", foe->nome);
             }
+
             
+            
+            
+            if (IsKeyPressed(KEY_F4))
+                currentScreen = ITEM_ESPECIAL;
+            
+            if (IsKeyPressed(KEY_ENTER) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
+            {
+                currentScreen = ENDING;
+            }
+        } break;
+        
+        case COMBATE:
+        {
+            if (!emCombate) currentScreen = GAMEPLAY;
+            //sleep(1);
+            // funcao n ta controlando isso?
+            //combate(player,foe); // TODO arrumar funcao, inimigo n morre
+            printf("Escolha de arma:\n");
             // MENU DE ARMAS
             if (IsKeyPressed(KEY_F1)) {
+                printf("Abriu menu armas\n");
                 menuArmas *= -1;
             }
             
@@ -199,8 +196,10 @@ void Update_Window()
                         if (IsKeyPressed(KEY_LEFT)) {
                             corRetanguloArma1 = DARKGREEN;
                             armaSelection = ARMA4;
-                            
-                        } break;
+                        }
+                        if (IsKeyPressed(KEY_ENTER))
+                            escolheArma(player,ARMA1);
+                        break;
                     case ARMA2:
                         corRetanguloArma2 = destaque;
                         if (IsKeyPressed(KEY_RIGHT)) {
@@ -210,7 +209,10 @@ void Update_Window()
                         if (IsKeyPressed(KEY_LEFT)) {
                             corRetanguloArma2 = GREEN;
                             armaSelection = ARMA1;
-                        } break;
+                        } 
+                        if (IsKeyPressed(KEY_ENTER))
+                            escolheArma(player,ARMA2);
+                        break;
                     case ARMA3:
                         corRetanguloArma3 = destaque;
                         if (IsKeyPressed(KEY_RIGHT)) {
@@ -236,17 +238,13 @@ void Update_Window()
                 }
             }
             
-            if (IsKeyPressed(KEY_F4))
-                currentScreen = ITEM_ESPECIAL;
-            
-            if (IsKeyPressed(KEY_ENTER) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
-            {
-                currentScreen = ENDING;
-            }
+            //escolheArma(player,0);
+            printf("Arma atual:%s\n", player->armaAtual.desc);
+            emCombate = -1;
+
         } break;
         
         case ITEM_ESPECIAL:
-            /* Seleciona item especial */
             switch(itemSelection)
             {
                 case LUVA:
@@ -261,9 +259,7 @@ void Update_Window()
                     }
                     if (IsKeyPressed(KEY_ENTER)) {
                         selecionaItem(LUVA,player);
-                    }
-                    break;
-                    
+                    } break;
                 case LASER:
                     corRetanguloLaser = PURPLE;
                     if (IsKeyPressed(KEY_UP)) {
@@ -276,9 +272,7 @@ void Update_Window()
                     }
                     if (IsKeyPressed(KEY_ENTER)) {
                         selecionaItem(LASER,player);
-                    }
-                    break;
-                    
+                    } break;
                 case SUCO:
                     corRetanguloSuco = PURPLE;
                     if (IsKeyPressed(KEY_UP)) {
@@ -291,10 +285,8 @@ void Update_Window()
                     }
                     if (IsKeyPressed(KEY_ENTER)) {
                         selecionaItem(SUCO,player);
-                    }
-                    break;
-                    
-                    case FACA:
+                    } break;
+                case FACA:
                     corRetanguloFaca = PURPLE;
                     if (IsKeyPressed(KEY_UP)) {
                         corRetanguloFaca = BLUE;
@@ -306,13 +298,9 @@ void Update_Window()
                     }
                     if (IsKeyPressed(KEY_ENTER)) {
                         selecionaItem(FACA,player);
-                    }
-                    break;
+                    } break;
             } break;
-            
-  
-
-        
+    
         case ENDING:
         {
             // TODO: Update ENDING screen variables here!
@@ -329,3 +317,5 @@ void Update_Window()
         default: break;
     }
 }
+
+

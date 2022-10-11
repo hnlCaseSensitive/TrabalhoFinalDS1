@@ -1,6 +1,6 @@
 
 
-typedef enum GameScreen { LOGO = 0, TITLE, GAMEPLAY,ITEM_ESPECIAL, ENDING } GameScreen;
+typedef enum GameScreen { LOGO = 0, TITLE, GAMEPLAY,COMBATE, ITEM_ESPECIAL, ENDING } GameScreen;
 typedef enum MenuSelection {PLAY = 0, EXIT} MenuSelection;
 typedef enum ItemSelection {LUVA, LASER, SUCO, FACA} ItemSelection;
 typedef enum ArmaSelection {ARMA1=0, ARMA2, ARMA3, ARMA4} ArmaSelection;
@@ -22,8 +22,8 @@ const int screenHeight = 450;
 int framesCounter = 0;          // Useful to count frames
 
 //Jogo
-playerCombate *player;
-inimigo foe;
+Player *player;
+Inimigo *foe;
 GrafoLA* Mapa;
 
 // Flags
