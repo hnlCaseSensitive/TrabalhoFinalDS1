@@ -76,7 +76,7 @@ void initArma(Player *player)
     {
         case ACIDO:
             sorteio = (rand() % (30 - 5 + 1)) + 10;
-            player->armaAtual.dano = 5 sorteio;
+            player->armaAtual.dano = 5 + sorteio;
             break;
         case ELETRICO:
             sorteio = (rand() % (30 - 5 + 1)) + 10;
