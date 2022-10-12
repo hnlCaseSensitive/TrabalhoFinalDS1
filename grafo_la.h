@@ -36,7 +36,7 @@ typedef struct noGrafo{
    int pai; // Util para DFS e BFS
    int distInicio; // Util para BFS
 
-   int tipo;
+   style tipo;
 
 
 } NoGrafo;

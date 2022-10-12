@@ -14,7 +14,7 @@ int main(void)
     player = (Player*) malloc(sizeof(Player));
     foe = (Inimigo*) malloc(sizeof(Inimigo));
     Mapa = createMap();
-    curr = &Mapa->vertices[0];
+    curr = Mapa->vertices;
 
 
     // loop
@@ -55,21 +55,19 @@ void Draw_Window()
         {
             DrawRectangle(0, 0, screenWidth, screenHeight, PURPLE);
 
-
-            switch(curr->tipo){
-                case 0:
+                if(curr->tipo == START){
                     DrawText("Start: ", 10, 10, 30, WHITE);
-
-                    DrawRectangle(150, 100, 300, 50, DARKBLUE); DrawText("Move", 180, 120, 20, WHITE);
-                    break;
-                case 1:
-                    break;
-                case 2:
+                }else if(curr->tipo == HEAL){
+                    DrawText("krl filha da puta", 10, 10, 50, WHITE);
                     DrawText("HEAL: ", 10 , 10, 30, WHITE);
-                    break;
-                default:
+
+                }else if(curr->tipo == ITEM){
                     DrawText("ITEM: ", 10, 10, 30, WHITE);
-            }
+                }
+
+                if(curr->tipo != END){
+                    DrawRectangle(150, 100, 300, 50, DARKBLUE); DrawText("Move", 180, 120, 20, WHITE);
+                }
 
 
             if (IsKeyDown(KEY_TAB)) { // so testando coisas
@@ -179,24 +177,28 @@ void Update_Window()
             }
             /* mapa */
 
-            if (IsKeyPressed(KEY_C)) {emCombate*=-1; } // TEMP
+            //if (IsKeyPressed(KEY_C)) {emCombate*=-1; } // TEMP
+
 
 
             switch(curr->tipo){
-                case 0:
-                    if (player->vidaAtual<=0) currentScreen = ENDING;
+                case START:
                     player->vidaAtual = player->vidaMaxima;
                     if(IsKeyPressed(KEY_ENTER)){
-                        curr_dest = &curr->lista[0];
+                        curr_dest = curr->lista;
                         currentScreen = ESCOLHEDEST;
                     }
                     break;
-                case 1:
+                case END:
+                    currentScreen = ENDING;
                     break;
-                case 2:
-
+                case HEAL:
+                    if(IsKeyPressed(KEY_ENTER)){
+                        curr_dest = curr->lista;
+                        currentScreen = ESCOLHEDEST;
+                    }
                     break;
-                default: break;
+                default:
 
             }
 
@@ -221,16 +223,16 @@ void Update_Window()
                 }
 
                 if(curr_dest == NULL){
-                    curr_dest = &curr->lista[0];
+                    curr_dest = curr->lista;
                 }
 
                 if(IsKeyPressed(KEY_ENTER)){
-                    curr = &Mapa->vertices[curr_dest->chaveDest];
-                    if( ((rand() % 10) + 1) * curr_dest->distancia > 50){
-                        emCombate*=-1;
-                    }else{
+                    *curr = Mapa->vertices[curr_dest->chaveDest];
+                    //if( ((rand() % 10) + 1) * curr_dest->distancia > 50){
+                    //    emCombate*=-1;
+                    //}else{
                         currentScreen = GAMEPLAY;
-                    }
+                    //}
                 }
 
             } break;
