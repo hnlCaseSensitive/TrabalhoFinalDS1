@@ -165,12 +165,6 @@ void imprimeCaminhoMinimoInversoGrafoLA(GrafoLA *grafo, int origem, int destino)
    printf("%d\n", origem);
 }
 
-int numeroArestas(GrafoLA *grafo, int chave)
-{
-    int tam = 0;
-    for (ArestaGrafo *arestaAux = grafo->vertices[chave].lista; arestaAux != NULL; arestaAux = arestaAux->prox) tam++;
-    return tam;
-}
 
 
 

@@ -2,7 +2,7 @@
 #define _GRAFO_LA_H_
 
 typedef enum{
-  EXPLORATORIA = 0, 
+  EXPLORATORIA = 0,
   OUTRA /* Nao Exploratoria */
 } tipoAresta;
 
@@ -15,7 +15,7 @@ typedef enum{
 typedef enum{
    START = 0,
    END,
-   KEY,
+   HEAL,
    ITEM
 } style;
 
@@ -45,10 +45,10 @@ typedef struct{
    int numVertices; // Numero de vertices
    NoGrafo *vertices; // Vetor de vertices
    int timestamp; // Util para DFS e BFS
-} GrafoLA; 
+} GrafoLA;
 
 
-// Funcao que cria um grafo 
+// Funcao que cria um grafo
 GrafoLA *criaGrafoLA(int tamanho);
 
 // Funcao que insere uma aresta em um grafo
@@ -71,8 +71,5 @@ int removeArestaGrafoLA(GrafoLA* grafo, int origem, int destino);
 int haCaminhoGrafoLA(GrafoLA *grafo, int origem, int destino);
 
 void imprimeCaminhoMinimoInversoGrafoLA(GrafoLA *grafo, int origem, int destino);
-
-// Retorna o numero de arestas de um vertice
-int numeroArestas(GrafoLA *grafo, int chave);
 
 #endif
