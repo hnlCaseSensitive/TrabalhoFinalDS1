@@ -431,6 +431,9 @@ void Update_Window()
         {
             // TODO: Update ENDING screen variables here!
 
+            Mapa = restartMap(Mapa);
+            curr = &Mapa->vertices[0];
+
             // Press enter to return to TITLE screen
             if (IsKeyPressed(KEY_ENTER) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
             {
