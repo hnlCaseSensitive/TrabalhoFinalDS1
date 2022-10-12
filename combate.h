@@ -1,6 +1,8 @@
 #ifndef _COMBATE_H_
 #define _COMBATE_H_
 
+#include "gameLogic.h"
+
 typedef enum{
     ACIDO = 0, // Dano extra contra humanos
     ELETRICO = 1, // Dano extra contra robos
@@ -23,7 +25,6 @@ typedef struct template_arma{
 typedef struct Player{
    int vidaMaxima; // O maximo de vida que o jogador pode ter
    int vidaAtual; // A vida atual do jogador
-   arma arma[4]; // A ideia � que em combate, teremos quatro op��es de armas
    arma armaAtual;
    char itemEspecial[128]; // Item especial adiquirido no come�o do jogo, guardado em char para ser mais facil ler
 
@@ -62,6 +63,8 @@ void output(Status *status, char *text);
 
 void initArma(Player *);
 
+void selecionaItem(int input, Player*);
 
+void criaJogador(Player*, Status*);
 #endif
 

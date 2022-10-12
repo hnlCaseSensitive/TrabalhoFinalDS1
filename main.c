@@ -18,7 +18,6 @@ int main(void)
     curr = &Mapa->vertices[0];
     
     status = (Status*) malloc(sizeof(Status));
-    status->armaEquipada = " nada";
 
     // loop
     while (!WindowShouldClose())    // Detect window close button or ESC key

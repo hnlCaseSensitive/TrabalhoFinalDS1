@@ -1,4 +1,4 @@
-
+#include "combate.h"
 
 typedef enum GameScreen { LOGO = 0, TITLE, GAMEPLAY,COMBATE, ITEM_ESPECIAL, ENDING, ESCOLHEDEST} GameScreen;
 typedef enum MenuSelection {PLAY = 0, EXIT} MenuSelection;
