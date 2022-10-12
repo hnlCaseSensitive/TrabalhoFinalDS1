@@ -63,8 +63,6 @@ void Draw_Window()
                 }else if(curr->tipo == HEAL){
                     DrawText("HEAL: ", 10 , 10, 30, WHITE);
 
-                }else if(curr->tipo == ITEM){
-                    DrawText("ITEM: ", 10, 10, 30, WHITE);
                 }
 
                 if(curr->tipo != END){
@@ -211,11 +209,10 @@ void Update_Window()
                         currentScreen = ESCOLHEDEST;
                     }
                     break;
-                case ITEM:
-                    if(IsKeyPressed(KEY_ENTER)){
-                        curr_dest = curr->lista;
-                        currentScreen = ESCOLHEDEST;
-                    }
+                case ATK:
+                    curr_dest = curr->lista;
+                    currentScreen = ESCOLHEDEST;
+                    emCombate*=-1;
                     break;
             }
 
@@ -347,14 +344,14 @@ void Update_Window()
 
 
 
-                if (foe->vida<=0 && emCombate>0) {
+                if (foe->vida <= 0) {
                     printf("inimigo perdeu\n");
                     emCombate = -1;
                 }
                 if (player->vidaAtual<=0 && emCombate>0) {
                     printf("vc perdeu\n");
                     emCombate = -1;
-                    //currentScreen = ENDING;
+                    currentScreen = ENDING;
                 }
                 if (emCombate<0) {
                     if (player->vidaAtual<=0) { currentScreen = ENDING; } // movido p controlar na nav do nodo por enquanto pelo menos

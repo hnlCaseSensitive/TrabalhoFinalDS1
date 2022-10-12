@@ -16,7 +16,7 @@ typedef enum{
    START = 0,
    END,
    HEAL,
-   ITEM
+   ATK
 } style;
 
 typedef struct arGrafo{
