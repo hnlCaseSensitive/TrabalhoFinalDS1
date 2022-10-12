@@ -16,7 +16,7 @@ int main(void)
     foe = (Inimigo*) malloc(sizeof(Inimigo));
     Mapa = createMap();
     curr = &Mapa->vertices[0];
-    
+
     status = (Status*) malloc(sizeof(Status));
 
     // loop
@@ -61,7 +61,6 @@ void Draw_Window()
             if(curr->tipo == START){
                     DrawText("Start: ", 10, 10, 30, WHITE);
                 }else if(curr->tipo == HEAL){
-                    DrawText("krl filha da puta", 10, 10, 50, WHITE);
                     DrawText("HEAL: ", 10 , 10, 30, WHITE);
 
                 }else if(curr->tipo == ITEM){
@@ -94,7 +93,7 @@ void Draw_Window()
         case COMBATE:
         {
             DrawRectangle(0, 0, screenWidth, screenHeight, corBackgroundCombate);
-            
+
             if(menuArmas>0) { //abre menu p escolher arma
                 DrawRectangle(0, 0, screenWidth/4, screenHeight/5, corRetanguloArma1); DrawText("ARMA 1", 0, 0, 30, BLACK);
                 DrawRectangle(200, 0, screenWidth/4, screenHeight/5, corRetanguloArma2); DrawText("ARMA 2", 200, 0, 30, BLACK);
@@ -103,13 +102,13 @@ void Draw_Window()
             }
             DrawText(foe->nome, 20, 60, 20, DARKBLUE);
             DrawText(TextFormat("Vida: %i", foe->vida), 200, 60, 20, DARKBLUE);
-            
+
             DrawText("Player", 20, 80, 20, DARKBLUE);
             DrawText(TextFormat("Vida: %i", player->vidaAtual), 200, 80, 20, DARKBLUE);
-            
+
              DrawText(TextFormat("out: %s", status->textOutputJ), 180,100,20, corOutputJ);
              DrawText(TextFormat("out: %s", status->textOutputI), 180,120,20, corOutputI);
-             
+
 
             DrawText(TextFormat("Arma:%s",status->armaEquipada), 0, 120, 10, DARKGREEN);
             DrawText("COMBATE", 20, 140, 20, DARKGREEN);
@@ -197,7 +196,7 @@ void Update_Window()
                 case START:
                     if (player->vidaAtual<=0) currentScreen = ENDING;
                     player->vidaAtual = player->vidaMaxima;
-                    
+
                     if(IsKeyPressed(KEY_ENTER)){
                         curr_dest = curr->lista;
                         currentScreen = ESCOLHEDEST;
@@ -212,8 +211,12 @@ void Update_Window()
                         currentScreen = ESCOLHEDEST;
                     }
                     break;
-                default: break;
-
+                case ITEM:
+                    if(IsKeyPressed(KEY_ENTER)){
+                        curr_dest = curr->lista;
+                        currentScreen = ESCOLHEDEST;
+                    }
+                    break;
             }
 
 
@@ -242,20 +245,20 @@ void Update_Window()
 
                 if(IsKeyPressed(KEY_ENTER)){
                     *curr = Mapa->vertices[curr_dest->chaveDest];
-                    //if( ((rand() % 10) + 1) * curr_dest->distancia > 50){
-                    //    emCombate*=-1;
-                    //}else{
+                    if( ((rand() % 10) + 1) * curr_dest->distancia > 50){
+                        emCombate*=-1;
+                    }else{
                         currentScreen = GAMEPLAY;
-                    //}
+                    }
                 }
 
             } break;
 
         case COMBATE:
         {
-            if (IsKeyPressed(KEY_U) && emCombate>0) 
+            if (IsKeyPressed(KEY_U) && emCombate>0)
                 menuArmas *= -1;
-            
+
             if (IsKeyPressed(KEY_A)) printf("arma:%d\n", player->armaAtual.tipoDano);
 
             if (menuArmas>0) {
@@ -341,8 +344,8 @@ void Update_Window()
                     //ataque(player,foe);
                 }
             //}
-            
-                    
+
+
 
                 if (foe->vida<=0 && emCombate>0) {
                     printf("inimigo perdeu\n");
@@ -356,9 +359,9 @@ void Update_Window()
                 if (emCombate<0) {
                     if (player->vidaAtual<=0) { currentScreen = ENDING; } // movido p controlar na nav do nodo por enquanto pelo menos
                     currentScreen = GAMEPLAY;
-                    
+
                 }
-            
+
             if (IsKeyPressed(KEY_F)) {
                 emCombate = -1;
                 foe = NULL;
