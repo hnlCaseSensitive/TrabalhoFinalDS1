@@ -104,8 +104,9 @@ void Draw_Window()
             DrawText("COMBATE (f pra voltar)", 20, 20, 40, DARKGREEN);
             DrawText("Aperte Y para atacar", 20, 50, 40, DARKGREEN); // opcao de trocar armas
             DrawText("Aperte U para trocar armas", 20, 90, 40, DARKGREEN);
-            if (!emCombate) currentScreen = GAMEPLAY;
-            if (IsKeyPressed(KEY_F)) currentScreen = GAMEPLAY;
+            //if (!emCombate) currentScreen = GAMEPLAY;
+            //if (IsKeyPressed(KEY_F)) currentScreen = GAMEPLAY;
+
         } break;
 
         case ITEM_ESPECIAL:
@@ -183,6 +184,7 @@ void Update_Window()
 
             switch(curr->tipo){
                 case 0:
+                    if (player->vidaAtual<=0) currentScreen = ENDING;
                     player->vidaAtual = player->vidaMaxima;
                     if(IsKeyPressed(KEY_ENTER)){
                         curr_dest = &curr->lista[0];
@@ -194,13 +196,12 @@ void Update_Window()
                 case 2:
 
                     break;
-                default:
+                default: break;
 
             }
 
 
             if (emCombate>0) {
-                printf("combm\n");
                 foe = sorteiaInimigo();
                 printf("Inimigo encontrado:%s\n", foe->nome);
                 currentScreen = COMBATE;
@@ -211,12 +212,6 @@ void Update_Window()
 
             if (IsKeyPressed(KEY_F4))
                 currentScreen = ITEM_ESPECIAL;
-            /*
-            if (IsKeyPressed(KEY_ENTER) || IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
-            {
-                currentScreen = ENDING;
-            }
-            */
         } break;
 
         case ESCOLHEDEST:
@@ -242,12 +237,8 @@ void Update_Window()
 
         case COMBATE:
         {
-            if (!emCombate) currentScreen = GAMEPLAY;
-            // MENU DE ARMAS
-            if (IsKeyPressed(KEY_F1)) {
-                printf("Abriu menu armas\n");
+            if (IsKeyPressed(KEY_U) && emCombate>0) 
                 menuArmas *= -1;
-            }
 
             if (menuArmas>0) {
                 switch (armaSelection)
@@ -307,13 +298,10 @@ void Update_Window()
                 }
             }
 
-            //escolheArma(player,0);
-            //printf("Arma atual:%s\n", player->armaAtual.desc);
-
-            // flag p ver se ta em combate em vez disso
             if (IsKeyPressed(KEY_Y)) {
                 if (foe->vida>0)
                     ataque(player,foe);
+            }
 
                 if (foe->vida<=0 && emCombate>0) {
                     printf("inimigo perdeu\n");
@@ -322,9 +310,17 @@ void Update_Window()
                 if (player->vidaAtual<=0 && emCombate>0) {
                     printf("vc perdeu\n");
                     emCombate = -1;
+                    //currentScreen = ENDING;
                 }
-                if (emCombate<0) // arrumar pra gameover se o jogador morrer dps
+                if (emCombate<0) {
+                    if (player->vidaAtual<=0) { currentScreen = ENDING; } // movido p controlar na nav do nodo por enquanto pelo menos
                     currentScreen = GAMEPLAY;
+                    
+                }
+            
+            if (IsKeyPressed(KEY_F)) {
+                emCombate = -1;
+                currentScreen = GAMEPLAY;
             }
 
         } break;

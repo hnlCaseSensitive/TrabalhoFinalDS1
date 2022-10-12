@@ -71,12 +71,12 @@ void escolheArma(Player *player, int escolha)
 void initArma(Player *player)
 {
     int sorteio = 0;
-    player->armaAtual.dano = 40;
+    player->armaAtual.dano = 0;
         switch (player->armaAtual.dano)
     {
         case ACIDO:
             sorteio = (rand() % (30 - 5 + 1)) + 10;
-            player->armaAtual.dano = 5 + sorteio;
+            player->armaAtual.dano = 5 sorteio;
             break;
         case ELETRICO:
             sorteio = (rand() % (30 - 5 + 1)) + 10;
