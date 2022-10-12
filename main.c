@@ -76,11 +76,10 @@ void Draw_Window()
                 DrawRectangle(600, 0, screenWidth/4, screenHeight/5, corRetanguloArma4);
             }
             //DrawRectangle(0, 0, screenWidth, screenHeight, GREEN);
-            DrawText("COMBATE (f pra voltar)", 20, 20, 40, DARKGREEN);
-            DrawText("Aperte Y para atacar", 20, 50, 40, DARKGREEN); // opcao de trocar armas
-            DrawText("Aperte U para trocar armas", 20, 90, 40, DARKGREEN);
-            if (!emCombate) currentScreen = GAMEPLAY;
-            if (IsKeyPressed(KEY_F)) currentScreen = GAMEPLAY;
+            DrawText("COMBATE (f pra voltar)", 20, 50, 40, DARKGREEN);
+            DrawText("Aperte Y para atacar", 20, 120, 40, DARKGREEN);
+            DrawText("Aperte F para tentar fugir", 20, 160, 40, DARKGREEN);
+            DrawText("Aperte U para trocar armas", 20, 200, 40, DARKGREEN);
         } break;
         
         case ITEM_ESPECIAL:
@@ -176,14 +175,14 @@ void Update_Window()
         
         case COMBATE:
         {
-            if (!emCombate) currentScreen = GAMEPLAY;
             // MENU DE ARMAS
-            if (IsKeyPressed(KEY_F1)) {
-                printf("Abriu menu armas\n");
+             if (IsKeyPressed(KEY_F1)) {
+                 menuArmas *= -1;
+             }
+             if (IsKeyPressed(KEY_U) && emCombate>0) {
+                printf("U\n");
                 menuArmas *= -1;
-            }
-            
-            if (menuArmas>0) {
+                if (menuArmas>0) {
                 switch (armaSelection)
                 {
                     case ARMA1:
@@ -240,11 +239,11 @@ void Update_Window()
                         break;
                 }
             }
+            }
+            
             
             //escolheArma(player,0);
             //printf("Arma atual:%s\n", player->armaAtual.desc);
-            
-            // flag p ver se ta em combate em vez disso
             if (IsKeyPressed(KEY_Y)) {
                 if (foe->vida>0)
                     ataque(player,foe);
@@ -256,8 +255,14 @@ void Update_Window()
                         printf("vc perdeu\n");
                         emCombate = -1;
                     }
+            
                 if (emCombate<0) // arrumar pra gameover se o jogador morrer dps
                     currentScreen = GAMEPLAY;
+            }
+            
+            if (IsKeyPressed(KEY_F)) {
+                emCombate = -1;
+                currentScreen = GAMEPLAY;
             }
 
         } break;
@@ -336,4 +341,24 @@ void Update_Window()
     }
 }
 
-
+void navegacao(int chaveInput, GrafoLA *Mapa)
+{
+    //int chave = 0;
+    ArestaGrafo *arestaAux = Mapa->vertices[chaveInput].lista;
+        printf("\nnodo atual: %d\n", chaveInput);
+        if (numeroArestas(Mapa ,chaveInput)>0){
+            printf("pode ir para:\n");
+            while (arestaAux!=NULL){
+                printf("%d |", arestaAux->chaveDest);
+                arestaAux = arestaAux->prox;
+        }   
+            printf("\n");
+            printf("\nEscolha um caminho p ir:");
+             scanf("%d", &chaveInput);
+             navegacao(chaveInput,Mapa);
+        }  else {
+            printf("Nao tem caminho, voltar\n");
+        }
+    //}
+    
+}

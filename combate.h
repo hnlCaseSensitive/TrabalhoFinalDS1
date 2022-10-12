@@ -50,6 +50,5 @@ void ataque(Player*, Inimigo*);
 
 void initArma(Player *);
 
-
 #endif
 

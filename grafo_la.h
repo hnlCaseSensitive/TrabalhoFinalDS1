@@ -72,4 +72,7 @@ int haCaminhoGrafoLA(GrafoLA *grafo, int origem, int destino);
 
 void imprimeCaminhoMinimoInversoGrafoLA(GrafoLA *grafo, int origem, int destino);
 
+// Retorna o numero de arestas de um vertice
+int numeroArestas(GrafoLA *grafo, int chave);
+
 #endif

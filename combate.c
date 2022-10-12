@@ -70,12 +70,13 @@ void escolheArma(Player *player, int escolha)
 //inicializa armas do jogador
 void initArma(Player *player)
 {
-    player->armaAtual.dano = 40;
+    player->armaAtual.dano = 20;
 }
 
 void ataque(Player *player, Inimigo *inimigo)
 {
     int sorteio = 0;
+    int danoAdd = 0; // dano especial
     initArma(player); //tirar daqui dps
 
     printf("Vida inimigo:%d\n", inimigo->vida);
@@ -87,25 +88,37 @@ void ataque(Player *player, Inimigo *inimigo)
         inimigo->vida -= player->armaAtual.dano;
     
     // Turno inimigo:
+    // açoes antes de dar dano sepa
     switch (inimigo->tipo)
     {
         case HUMANO: // leva mais dano de acido, chances de roubar arma do jogador
-            
+            printf("inimigo humano");
             srand(time(NULL));
             sorteio = rand() % 50;
             if (sorteio==45) {
                 printf("Arma do jogador roubada!\n");
                 escolheArma(player,DESARMADO);
             }
+            // fazer chances de errar ataque
+            player->vidaAtual -= inimigo->dano;
             break;
         case ROBO: // leva mais dano de eletricidade
-            
+            printf("inimigo robo\n");
             break;
         case INSETO: // perfurado
-            
+            printf("inimigo inseto\n");
+            srand(time(NULL));
+            sorteio = rand() % 50;
+            if (sorteio%2==0) {
+                printf("mordida de inseto!+ 1 dano por turno\n");
+                danoAdd += 1;
+            }
             break;
             
     }
+    printf("inimigo atacou!\n");
+    player->vidaAtual -= inimigo->dano + danoAdd;
+    printf("vida do jogador:%d\n", player->vidaAtual);
     
 }
 
