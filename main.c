@@ -16,7 +16,7 @@ int main(void)
     foe = (Inimigo*) malloc(sizeof(Inimigo));
     Mapa = createMap();
     curr = &Mapa->vertices[0];
-
+    
     status = (Status*) malloc(sizeof(Status));
 
     // loop
@@ -68,16 +68,6 @@ void Draw_Window()
                 if(curr->tipo != END){
                     DrawRectangle(150, 100, 300, 50, DARKBLUE); DrawText("Move", 180, 120, 20, WHITE);
                 }
-
-
-            if (IsKeyDown(KEY_TAB)) { // so testando coisas
-                DrawRectangle(200, 200, screenWidth/4, screenHeight/5, YELLOW); DrawText("Vida", 200, 0, 20, MAROON);
-            }
-
-            // TODO
-            if (emCombate>0) {
-                DrawRectangle(0, 0, screenWidth, screenHeight/4, GREEN); DrawText("INIMIGO!!!", 20, 20, 40, DARKGREEN);
-            }
         } break;
 
         case ESCOLHEDEST:
@@ -91,7 +81,7 @@ void Draw_Window()
         case COMBATE:
         {
             DrawRectangle(0, 0, screenWidth, screenHeight, corBackgroundCombate);
-
+            
             if(menuArmas>0) { //abre menu p escolher arma
                 DrawRectangle(0, 0, screenWidth/4, screenHeight/5, corRetanguloArma1); DrawText("ARMA 1", 0, 0, 30, BLACK);
                 DrawRectangle(200, 0, screenWidth/4, screenHeight/5, corRetanguloArma2); DrawText("ARMA 2", 200, 0, 30, BLACK);
@@ -100,15 +90,16 @@ void Draw_Window()
             }
             DrawText(foe->nome, 20, 60, 20, DARKBLUE);
             DrawText(TextFormat("Vida: %i", foe->vida), 200, 60, 20, DARKBLUE);
-
+            
             DrawText("Player", 20, 80, 20, DARKBLUE);
             DrawText(TextFormat("Vida: %i", player->vidaAtual), 200, 80, 20, DARKBLUE);
-
-             DrawText(TextFormat("out: %s", status->textOutputJ), 180,100,20, corOutputJ);
-             DrawText(TextFormat("out: %s", status->textOutputI), 180,120,20, corOutputI);
-
+            
+             //DrawText(TextFormat("out: %s", status->textOutputJ), 180,100,20, corOutputJ);
+             //DrawText(TextFormat("out: %s", status->textOutputI), 180,120,20, corOutputI);
+             
 
             DrawText(TextFormat("Arma:%s",status->armaEquipada), 0, 120, 10, DARKGREEN);
+           // DrawText(TextFormat("%s",status->turno), 100, 120, 20, DARKGREEN);
             DrawText("COMBATE", 20, 140, 20, DARKGREEN);
             DrawText("Aperte Y para atacar", 20, 180, 20, DARKGREEN);
             DrawText("Aperte F para tentar fugir", 20, 200, 20, DARKGREEN);
@@ -135,10 +126,9 @@ void Draw_Window()
 
         case ENDING:
         {
-            // TODO: Draw ENDING screen here!
             DrawRectangle(0, 0, screenWidth, screenHeight, BLUE);
             DrawText("GAMEOVER", 20, 20, 40, DARKBLUE);
-            DrawText("Jogar novamente?", 120, 220, 20, DARKBLUE);
+            DrawText("Jogar novamente?(Enter)", 120, 220, 20, DARKBLUE);
 
         } break;
         default: break;
@@ -194,18 +184,20 @@ void Update_Window()
                 case START:
                     if (player->vidaAtual<=0) currentScreen = ENDING;
                     player->vidaAtual = player->vidaMaxima;
-
+                    
                     if(IsKeyPressed(KEY_ENTER)){
                         curr_dest = curr->lista;
                         currentScreen = ESCOLHEDEST;
                     }
                     break;
                 case END:
+                    printf("nodo final\n");
                     currentScreen = ENDING;
                     break;
                 case HEAL:
                     if(IsKeyPressed(KEY_ENTER)){
                         curr_dest = curr->lista;
+                        player->vidaAtual = 0.5 * player->vidaMaxima;
                         currentScreen = ESCOLHEDEST;
                     }
                     break;
@@ -214,6 +206,8 @@ void Update_Window()
                     currentScreen = ESCOLHEDEST;
                     emCombate*=-1;
                     break;
+                default: break;
+
             }
 
 
@@ -234,6 +228,7 @@ void Update_Window()
             {
                 if(IsKeyPressed(KEY_W)){
                     curr_dest = curr_dest->prox;
+                    printf("W\n");
                 }
 
                 if(curr_dest == NULL){
@@ -253,10 +248,8 @@ void Update_Window()
 
         case COMBATE:
         {
-            if (IsKeyPressed(KEY_U) && emCombate>0)
+            if (IsKeyPressed(KEY_U) && emCombate>0) 
                 menuArmas *= -1;
-
-            if (IsKeyPressed(KEY_A)) printf("arma:%d\n", player->armaAtual.tipoDano);
 
             if (menuArmas>0) {
                 switch (armaSelection)
@@ -323,47 +316,58 @@ void Update_Window()
                         break;
                 }
             }
+            
+            
 
             if (IsKeyPressed(KEY_Y)) {
+                // ATACAR.. (turno do jogador)
                 if (foe->vida>0) {
-//                     corOutputJ = DARKBLUE;
-//                     corOutputI = DARKBLUE;
-//                     if (ColorToInt(corOutputI)!=ColorToInt(corBackgroundCombate)) corOutputJ = corBackgroundCombate;
-//                     if (ColorToInt(corOutputJ)!=ColorToInt(corBackgroundCombate)) corOutputI = corBackgroundCombate;
+
+
+                        corOutputJ = DARKBLUE;
+                        corOutputI = WHITE;
+
+                    
+//                     if (status->turnoInimigo) {
+//                         printf("Turno do inimigo FLAG\n");
+//                         corOutputJ = corBackgroundCombate; //esconde acao jogador
+//                         corOutputI = DARKBLUE;
+//                     }
+
                     //currentOutput = status->textOutputJ;
                     turnoJogador(player,foe,status);
-                    sleep(0.7);
-                    //corOutputJ = corBackgroundCombate; // color backgroundcombate
-
-                    turnoInimigo(player,foe,status);
+                    sleep(1);
+//                     if (!status->turnoJogador)
+//                         turnoInimigo(player,foe,status);
                     //currentOutput = status->textOutputI;
+                    
                 }
-                    //ataque(player,foe);
-                }
-            //}
+            }
+            
+            if (!status->turnoJogador) {
+                printf("\n turno do inimigo\n");
+                turnoInimigo(player,foe,status);
+                                        corOutputI = DARKBLUE;
+                        corOutputJ = WHITE;
+                
+            }
 
-
-
-                if (foe->vida <= 0) {
-                    printf("inimigo perdeu\n");
+                if ((foe->vida<=0 || player->vidaAtual<=0) && emCombate>0) {
                     emCombate = -1;
-                }
-                if (player->vidaAtual <= 0) {
-                    printf("vc perdeu\n");
-                    emCombate = -1;
-                    //currentScreen = ENDING;
                 }
 
                 if (emCombate<0) {
-                    if (player->vidaAtual<=0) { currentScreen = ENDING; } // movido p controlar na nav do nodo por enquanto pelo menos
+                    status->turnoJogador = 0;
+                    status->turnoInimigo = 0;
+                    if (player->vidaAtual<=0) { currentScreen = ENDING; }
                     currentScreen = ESCOLHEDEST;
-
+                    
                 }
-
+            
             if (IsKeyPressed(KEY_F)) {
                 emCombate = -1;
                 foe = NULL;
-                currentScreen = GAMEPLAY;
+                currentScreen = ESCOLHEDEST;
             }
 
         } break;
@@ -442,7 +446,7 @@ void Update_Window()
             }
         } break;
         default: break;
-    }
+        }
 }
 
 

@@ -96,8 +96,11 @@ void initArma(Player *player)
 void turnoJogador(Player *player, Inimigo *inimigo, Status *status)
 {
     initArma(player); //tirar daqui dps
+    status->turno = "Turno jogador";
+    
+    status->turnoInimigo = 0;
 
-    printf("Turno jogador\n");
+    printf("Turno jogador função\n");
     if (inimigo->vulnerabilidade==player->armaAtual.tipoDano) {
         inimigo->vida -= (player->armaAtual.dano + 15);
         //output(status, "Jogador fez dano a mais");
@@ -113,16 +116,20 @@ void turnoJogador(Player *player, Inimigo *inimigo, Status *status)
         //return status;
     }
         //status->textOutput = "jogador nfez nada";
+        status->turnoJogador = 0;
+        status->turnoInimigo = 1;
 }
 
 void turnoInimigo(Player *player, Inimigo *inimigo, Status *status)
 {
     int sorteio = 0;
     int danoAdd = 0; // dano especial
+    status->turno = "Turno inimigo";
+    //status->turnoJogador = 0;
+    status->turnoInimigo = 1;
     switch (inimigo->tipo)
     {
         case HUMANO: // leva mais dano de acido, chances de roubar arma do jogador
-            printf("inimigo humano\n");
             srand(time(NULL));
             sorteio = rand() % 50;
             if (sorteio==45) {
@@ -146,9 +153,11 @@ void turnoInimigo(Player *player, Inimigo *inimigo, Status *status)
             break;
             
     }
-    printf("inimigo atacou!\n");
+    //printf("inimigo atacou!\n");
     player->vidaAtual -= inimigo->dano + danoAdd;
-    printf("vida do jogador:%d\n", player->vidaAtual);
+    //printf("vida do jogador:%d\n", player->vidaAtual);
     status->textOutputI = "inimigo atacou";
+    status->turnoInimigo = 0;
+    status->turnoJogador = 1;
 }
 
