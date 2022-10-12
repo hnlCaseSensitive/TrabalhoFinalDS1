@@ -348,14 +348,15 @@ void Update_Window()
                     printf("inimigo perdeu\n");
                     emCombate = -1;
                 }
-                if (player->vidaAtual<=0 && emCombate>0) {
+                if (player->vidaAtual <= 0) {
                     printf("vc perdeu\n");
                     emCombate = -1;
-                    currentScreen = ENDING;
+                    //currentScreen = ENDING;
                 }
+
                 if (emCombate<0) {
                     if (player->vidaAtual<=0) { currentScreen = ENDING; } // movido p controlar na nav do nodo por enquanto pelo menos
-                    currentScreen = GAMEPLAY;
+                    currentScreen = ESCOLHEDEST;
 
                 }
 
