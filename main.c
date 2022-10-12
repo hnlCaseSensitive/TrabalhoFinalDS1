@@ -14,8 +14,8 @@ int main(void)
     player = (Player*) malloc(sizeof(Player));
     foe = (Inimigo*) malloc(sizeof(Inimigo));
     Mapa = createMap();
-    curr = Mapa->vertices;
-
+    curr = &Mapa->vertices[0];
+    
 
     // loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
@@ -55,7 +55,8 @@ void Draw_Window()
         {
             DrawRectangle(0, 0, screenWidth, screenHeight, PURPLE);
 
-                if(curr->tipo == START){
+
+            if(curr->tipo == START){
                     DrawText("Start: ", 10, 10, 30, WHITE);
                 }else if(curr->tipo == HEAL){
                     DrawText("krl filha da puta", 10, 10, 50, WHITE);
@@ -77,7 +78,6 @@ void Draw_Window()
             // TODO
             if (emCombate>0) {
                 DrawRectangle(0, 0, screenWidth, screenHeight/4, GREEN); DrawText("INIMIGO!!!", 20, 20, 40, DARKGREEN);
-                //currentScreen = COMBATE;
             }
         } break;
 
@@ -91,19 +91,21 @@ void Draw_Window()
 
         case COMBATE:
         {
-            //printf("Tela do combate\n");
             if(menuArmas>0) { //abre menu p escolher arma
-                DrawRectangle(0, 0, screenWidth/4, screenHeight/5, corRetanguloArma1);
-                DrawRectangle(200, 0, screenWidth/4, screenHeight/5, corRetanguloArma2);
-                DrawRectangle(400, 0, screenWidth/4, screenHeight/5, corRetanguloArma3);
-                DrawRectangle(600, 0, screenWidth/4, screenHeight/5, corRetanguloArma4);
+                DrawRectangle(0, 0, screenWidth/4, screenHeight/5, corRetanguloArma1); DrawText("ARMA 1", 0, 0, 30, BLACK);
+                DrawRectangle(200, 0, screenWidth/4, screenHeight/5, corRetanguloArma2); DrawText("ARMA 2", 200, 0, 30, BLACK);
+                DrawRectangle(400, 0, screenWidth/4, screenHeight/5, corRetanguloArma3); DrawText("ARMA 3", 400, 0, 30, BLACK);
+                DrawRectangle(600, 0, screenWidth/4, screenHeight/5, corRetanguloArma4); DrawText("ARMA 4", 600, 0, 30, BLACK);
             }
-            //DrawRectangle(0, 0, screenWidth, screenHeight, GREEN);
-            DrawText("COMBATE (f pra voltar)", 20, 20, 40, DARKGREEN);
-            DrawText("Aperte Y para atacar", 20, 50, 40, DARKGREEN); // opcao de trocar armas
-            DrawText("Aperte U para trocar armas", 20, 90, 40, DARKGREEN);
-            //if (!emCombate) currentScreen = GAMEPLAY;
-            //if (IsKeyPressed(KEY_F)) currentScreen = GAMEPLAY;
+            
+            DrawText(foe->nome, 20, 60, 20, DARKBLUE);
+
+
+            DrawText("COMBATE (f pra voltar)", 20, 100, 40, DARKGREEN);
+            DrawText("Aperte Y para atacar", 20, 140, 40, DARKGREEN);
+            DrawText("Aperte F para tentar fugir", 20, 180, 40, DARKGREEN);
+            DrawText("Aperte U para trocar armas", 20, 220, 40, DARKGREEN);
+
 
         } break;
 
@@ -180,9 +182,9 @@ void Update_Window()
             //if (IsKeyPressed(KEY_C)) {emCombate*=-1; } // TEMP
 
 
-
             switch(curr->tipo){
                 case START:
+                    if (player->vidaAtual<=0) currentScreen = ENDING;
                     player->vidaAtual = player->vidaMaxima;
                     if(IsKeyPressed(KEY_ENTER)){
                         curr_dest = curr->lista;
@@ -198,14 +200,14 @@ void Update_Window()
                         currentScreen = ESCOLHEDEST;
                     }
                     break;
-                default:
+                default: break;
 
             }
 
 
             if (emCombate>0) {
                 foe = sorteiaInimigo();
-                printf("Inimigo encontrado:%s\n", foe->nome);
+                //printf("Inimigo encontrado:%s\n", foe->nome);
                 currentScreen = COMBATE;
             }
 
@@ -322,6 +324,7 @@ void Update_Window()
             
             if (IsKeyPressed(KEY_F)) {
                 emCombate = -1;
+                foe = NULL;
                 currentScreen = GAMEPLAY;
             }
 
