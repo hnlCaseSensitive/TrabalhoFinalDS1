@@ -1,6 +1,4 @@
 #include "combate.h"
-#include "raylib.h"
-
 
 typedef enum GameScreen { LOGO = 0, TITLE, GAMEPLAY,COMBATE, ITEM_ESPECIAL, ENDING, ESCOLHEDEST} GameScreen;
 typedef enum MenuSelection {PLAY = 0, EXIT} MenuSelection;
@@ -52,9 +50,9 @@ Color corRetanguloArma4 = GREEN;
 
 const Color corBackgroundCombate = WHITE;
 
-Color corOutputJ = WHITE;
-Color corOutputI = WHITE;
+Color corOutputJ = DARKBLUE;
+Color corOutputI = DARKBLUE;
 
 Color destaque = GRAY;
-
+//===============================================//
 

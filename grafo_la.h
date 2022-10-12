@@ -73,4 +73,3 @@ int haCaminhoGrafoLA(GrafoLA *grafo, int origem, int destino);
 void imprimeCaminhoMinimoInversoGrafoLA(GrafoLA *grafo, int origem, int destino);
 
 #endif
-

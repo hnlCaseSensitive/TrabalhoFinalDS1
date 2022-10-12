@@ -45,11 +45,6 @@ typedef struct statusCombate {
     char *textOutputJ;
     char *textOutputI; //renomear
     char *armaEquipada;
-    char *turno;
-
-    int turnoJogador;
-    int turnoInimigo;
-
 } Status;
 
 Inimigo *sorteiaInimigo();
