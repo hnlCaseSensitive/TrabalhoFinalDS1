@@ -15,7 +15,7 @@ void Update_Window();
 GameScreen currentScreen = TITLE;
 MenuSelection menuSelection = PLAY;
 ItemSelection itemSelection = LUVA;
-ArmaSelection armaSelection = ARMA1;
+ArmaSelection armaSelection = DESARMADO;
 
 const int screenWidth = 800;
 const int screenHeight = 450;
@@ -27,7 +27,7 @@ Inimigo *foe;
 GrafoLA* Mapa;
 NoGrafo* curr;
 ArestaGrafo* curr_dest;
-
+Status *status;
 // Flags
 int jogadorExiste = 0;
 int menuArmas = -1;
@@ -47,6 +47,11 @@ Color corRetanguloArma1 = GREEN;
 Color corRetanguloArma2 = DARKGREEN;
 Color corRetanguloArma3 = DARKGREEN;
 Color corRetanguloArma4 = GREEN;
+
+const Color corBackgroundCombate = WHITE;
+
+Color corOutputJ = DARKBLUE;
+Color corOutputI = DARKBLUE;
 
 Color destaque = GRAY;
 //===============================================//

@@ -2,6 +2,7 @@
 #include <string.h>
 
 
+/*
 void inicioJogoCombate (Player* player){
 
     // Inicializando hp
@@ -19,16 +20,18 @@ void inicioJogoCombate (Player* player){
     player->arma[1] = eletrico;
     player->arma[2] = acido;
     player->arma[3] = punhos;
-}
+}*/
 
-void criaJogador(Player *player)
+void criaJogador(Player *player, Status *status)
 {
     // Inicializando hp
     player->vidaAtual = 100;
     player->vidaMaxima = 100;
+    player->armaAtual.tipoDano = DESARMADO;
+    status->armaEquipada = "Desarmado";
 
     // Declarando as armas do jogador
-    arma acido = {.dano = 10, .desc = "Arma de acido", .tipoDano = ACIDO};
+    /*arma acido = {.dano = 10, .desc = "Arma de acido", .tipoDano = ACIDO};
     arma eletrico = {.dano = 10, .desc = "Arma eletrica", .tipoDano = ELETRICO};
     arma perfuracao = {.dano = 10, .desc = "Arma de perfuracao", .tipoDano = PERFURACAO};
     arma punhos = {.dano = 10, .desc = "Ataque desarmado", .tipoDano = DESARMADO};
@@ -37,7 +40,7 @@ void criaJogador(Player *player)
     player->arma[0] = perfuracao;
     player->arma[1] = eletrico;
     player->arma[2] = acido;
-    player->arma[3] = punhos;
+    player->arma[3] = punhos;*/
     
 }
 

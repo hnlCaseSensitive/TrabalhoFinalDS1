@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include "gui.h"
 
+
 int main(void)
 {
 
@@ -16,6 +17,8 @@ int main(void)
     Mapa = createMap();
     curr = &Mapa->vertices[0];
     
+    status = (Status*) malloc(sizeof(Status));
+    status->armaEquipada = " nada";
 
     // loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
@@ -91,24 +94,29 @@ void Draw_Window()
 
         case COMBATE:
         {
+            DrawRectangle(0, 0, screenWidth, screenHeight, corBackgroundCombate);
+            
             if(menuArmas>0) { //abre menu p escolher arma
                 DrawRectangle(0, 0, screenWidth/4, screenHeight/5, corRetanguloArma1); DrawText("ARMA 1", 0, 0, 30, BLACK);
                 DrawRectangle(200, 0, screenWidth/4, screenHeight/5, corRetanguloArma2); DrawText("ARMA 2", 200, 0, 30, BLACK);
                 DrawRectangle(400, 0, screenWidth/4, screenHeight/5, corRetanguloArma3); DrawText("ARMA 3", 400, 0, 30, BLACK);
                 DrawRectangle(600, 0, screenWidth/4, screenHeight/5, corRetanguloArma4); DrawText("ARMA 4", 600, 0, 30, BLACK);
             }
-            
             DrawText(foe->nome, 20, 60, 20, DARKBLUE);
             DrawText(TextFormat("Vida: %i", foe->vida), 200, 60, 20, DARKBLUE);
             
             DrawText("Player", 20, 80, 20, DARKBLUE);
             DrawText(TextFormat("Vida: %i", player->vidaAtual), 200, 80, 20, DARKBLUE);
+            
+             DrawText(TextFormat("out: %s", status->textOutputJ), 180,100,20, corOutputJ);
+             DrawText(TextFormat("out: %s", status->textOutputI), 180,120,20, corOutputI);
+             
 
-
-            DrawText("COMBATE (f pra voltar)", 20, 100, 40, DARKGREEN);
-            DrawText("Aperte Y para atacar", 20, 140, 40, DARKGREEN);
-            DrawText("Aperte F para tentar fugir", 20, 180, 40, DARKGREEN);
-            DrawText("Aperte U para trocar armas", 20, 220, 40, DARKGREEN);
+            DrawText(TextFormat("Arma:%s",status->armaEquipada), 0, 120, 10, DARKGREEN);
+            DrawText("COMBATE", 20, 140, 20, DARKGREEN);
+            DrawText("Aperte Y para atacar", 20, 180, 20, DARKGREEN);
+            DrawText("Aperte F para tentar fugir", 20, 200, 20, DARKGREEN);
+            DrawText("Aperte U para trocar armas", 20, 240, 20, DARKGREEN);
 
 
         } break;
@@ -178,7 +186,7 @@ void Update_Window()
             /* criando personagem */
             if (!jogadorExiste)
             {
-                criaJogador(player);
+                criaJogador(player, status);
                 jogadorExiste = 1;
             }
             /* mapa */
@@ -248,6 +256,8 @@ void Update_Window()
         {
             if (IsKeyPressed(KEY_U) && emCombate>0) 
                 menuArmas *= -1;
+            
+            if (IsKeyPressed(KEY_A)) printf("arma:%d\n", player->armaAtual.tipoDano);
 
             if (menuArmas>0) {
                 switch (armaSelection)
@@ -262,8 +272,10 @@ void Update_Window()
                             corRetanguloArma1 = DARKGREEN;
                             armaSelection = ARMA4;
                         }
-                        if (IsKeyPressed(KEY_ENTER))
-                            escolheArma(player,ARMA1);
+                        if (IsKeyPressed(KEY_ENTER)) {
+                            escolheArma(player,ARMA1,status);
+                            menuArmas = -1;
+                        }
                         break;
                     case ARMA2:
                         corRetanguloArma2 = destaque;
@@ -275,8 +287,10 @@ void Update_Window()
                             corRetanguloArma2 = GREEN;
                             armaSelection = ARMA1;
                         }
-                        if (IsKeyPressed(KEY_ENTER))
-                            escolheArma(player,ARMA2);
+                        if (IsKeyPressed(KEY_ENTER)) {
+                            escolheArma(player,ARMA2,status);
+                            menuArmas = -1;
+                        }
                         break;
                     case ARMA3:
                         corRetanguloArma3 = destaque;
@@ -288,8 +302,10 @@ void Update_Window()
                             corRetanguloArma3 = DARKGREEN;
                             armaSelection = ARMA2;
                         }
-                        if (IsKeyPressed(KEY_ENTER))
-                            escolheArma(player,ARMA3);
+                        if (IsKeyPressed(KEY_ENTER)) {
+                            escolheArma(player,ARMA3,status);
+                            menuArmas = -1;
+                        }
                         break;
                     case ARMA4:
                         corRetanguloArma4 = destaque;
@@ -301,16 +317,33 @@ void Update_Window()
                             corRetanguloArma4 = GREEN;
                             armaSelection = ARMA3;
                         }
-                        if (IsKeyPressed(KEY_ENTER))
-                            escolheArma(player,ARMA4);
+                        if (IsKeyPressed(KEY_ENTER)) {
+                            escolheArma(player,ARMA4,status);
+                            menuArmas = -1;
+                        }
                         break;
                 }
             }
 
             if (IsKeyPressed(KEY_Y)) {
-                if (foe->vida>0)
-                    ataque(player,foe);
-            }
+                if (foe->vida>0) {
+//                     corOutputJ = DARKBLUE;
+//                     corOutputI = DARKBLUE;
+//                     if (ColorToInt(corOutputI)!=ColorToInt(corBackgroundCombate)) corOutputJ = corBackgroundCombate;
+//                     if (ColorToInt(corOutputJ)!=ColorToInt(corBackgroundCombate)) corOutputI = corBackgroundCombate;
+                    //currentOutput = status->textOutputJ;
+                    turnoJogador(player,foe,status);
+                    sleep(0.7);
+                    //corOutputJ = corBackgroundCombate; // color backgroundcombate
+
+                    turnoInimigo(player,foe,status);
+                    //currentOutput = status->textOutputI;
+                }
+                    //ataque(player,foe);
+                }
+            //}
+            
+                    
 
                 if (foe->vida<=0 && emCombate>0) {
                     printf("inimigo perdeu\n");

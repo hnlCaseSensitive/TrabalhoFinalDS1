@@ -40,13 +40,25 @@ typedef struct Inimigo{
     TiposDano vulnerabilidade;
 } Inimigo;
 
+typedef struct statusCombate {
+    char *textOutputJ;
+    char *textOutputI; //renomear
+    char *armaEquipada;
+} Status;
+
 Inimigo *sorteiaInimigo();
 
 void combate(Player* player, Inimigo *inimigo);
 
-void escolheArma(Player *player, int arma);
+void escolheArma(Player *player, int arma, Status *status);
 
 void ataque(Player*, Inimigo*);
+
+void turnoJogador(Player *player, Inimigo *inimigo, Status *status);
+
+void turnoInimigo(Player *player, Inimigo *inimigo, Status *status);
+
+void output(Status *status, char *text);
 
 void initArma(Player *);
 

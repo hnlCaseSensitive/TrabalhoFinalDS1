@@ -13,7 +13,7 @@ Inimigo* sorteiaInimigo(){
 
     //printf ("sorteio: %i", sorteio);
     // E seleciona um inimigo baseado no numero sorteado
-    if (sorteio > 90){
+    if (sorteio >= 75){
         aux->dano = 10;
         aux->vida = 100;
         aux->tipo = INSETO;
@@ -21,7 +21,7 @@ Inimigo* sorteiaInimigo(){
         aux->chancePontoFraco = 35;
         aux->vulnerabilidade = PERFURACAO;
     }
-    else if (sorteio > 80){
+    else if (sorteio > 50){
         aux->dano = 10;
         aux->vida = 100;
         aux->tipo = ROBO;
@@ -41,27 +41,29 @@ Inimigo* sorteiaInimigo(){
     return aux;
 }
 
-void escolheArma(Player *player, int escolha)
+void escolheArma(Player *player, int escolha, Status *status)
 {
-    //printf("Escolha da arma\n");
+    printf("Escolha da arma\n");
     // arma.tipoDano
+    player->armaAtual.tipoDano = escolha;
+
     switch(escolha)
     {
         case ACIDO:
         {
-            player->armaAtual = player->arma[ACIDO]; 
+            status->armaEquipada = "Acido"; 
         } break;
         case ELETRICO:
         {
-            player->armaAtual = player->arma[ELETRICO]; 
+            status->armaEquipada = "Eletrico";
         } break;
         case PERFURACAO:
         {
-            player->armaAtual = player->arma[PERFURACAO]; 
+            status->armaEquipada = "Perfuracao";
         } break;
         case DESARMADO:
         {
-            player->armaAtual = player->arma[DESARMADO]; 
+            status->armaEquipada = "Desarmado";
         } break;
     }
     
@@ -92,22 +94,81 @@ void initArma(Player *player)
     }
 }
 // //int num = (rand() % (upper - lower + 1)) + lower;
-void ataque(Player *player, Inimigo *inimigo)
+// void ataque(Player *player, Inimigo *inimigo)
+// {
+//     int sorteio = 0;
+//     int danoAdd = 0; // dano especial
+//     initArma(player); //tirar daqui dps
+// 
+//     printf("Vida inimigo:%d\n", inimigo->vida);
+//     Turno jogador:
+//     printf("Turno jogador\n");
+//     if (inimigo->vulnerabilidade==player->armaAtual.tipoDano)
+//         inimigo->vida -= (player->armaAtual.dano + 15);
+//     else
+//         inimigo->vida -= player->armaAtual.dano;
+//     
+//     Turno inimigo:
+//     açoes antes de dar dano sepa
+//     switch (inimigo->tipo)
+//     {
+//         case HUMANO: // leva mais dano de acido, chances de roubar arma do jogador
+//             printf("inimigo humano\n");
+//             srand(time(NULL));
+//             sorteio = rand() % 50;
+//             if (sorteio==45) {
+//                 printf("Arma do jogador roubada!\n");
+//                 escolheArma(player,DESARMADO);
+//             }
+//             fazer chances de errar ataque
+//             player->vidaAtual -= inimigo->dano;
+//             break;
+//         case ROBO: // leva mais dano de eletricidade
+//             printf("inimigo robo\n");
+//             break;
+//         case INSETO: // perfurado
+//             printf("inimigo inseto\n");
+//             srand(time(NULL));
+//             sorteio = rand() % 50;
+//             if (sorteio%2==0) {
+//                 printf("mordida de inseto!+ 1 dano por turno\n");
+//                 danoAdd += 1;
+//             }
+//             break;
+//             
+//     }
+//     printf("inimigo atacou!\n");
+//     player->vidaAtual -= inimigo->dano + danoAdd;
+//     printf("vida do jogador:%d\n", player->vidaAtual);
+//     
+// }
+
+void turnoJogador(Player *player, Inimigo *inimigo, Status *status)
+{
+    initArma(player); //tirar daqui dps
+
+    printf("Turno jogador\n");
+    if (inimigo->vulnerabilidade==player->armaAtual.tipoDano) {
+        inimigo->vida -= (player->armaAtual.dano + 15);
+        //output(status, "Jogador fez dano a mais");
+        status->textOutputJ = "jogador fez dano a mais";
+        //return status;
+        //printf("Status->texoutput:%s\n", status->textOutput);
+        //return "Jogador fez de dano";
+    }
+    else {
+        inimigo->vida -= player->armaAtual.dano;
+        status->textOutputJ = "jogador fez dano";
+        //printf("Status->texoutput:%s\n", status->textOutput);
+        //return status;
+    }
+        //status->textOutput = "jogador nfez nada";
+}
+
+void turnoInimigo(Player *player, Inimigo *inimigo, Status *status)
 {
     int sorteio = 0;
     int danoAdd = 0; // dano especial
-    initArma(player); //tirar daqui dps
-
-    printf("Vida inimigo:%d\n", inimigo->vida);
-    // Turno jogador:
-    printf("Turno jogador\n");
-    if (inimigo->vulnerabilidade==player->armaAtual.tipoDano)
-        inimigo->vida -= (player->armaAtual.dano + 15);
-    else
-        inimigo->vida -= player->armaAtual.dano;
-    
-    // Turno inimigo:
-    // açoes antes de dar dano sepa
     switch (inimigo->tipo)
     {
         case HUMANO: // leva mais dano de acido, chances de roubar arma do jogador
@@ -116,7 +177,7 @@ void ataque(Player *player, Inimigo *inimigo)
             sorteio = rand() % 50;
             if (sorteio==45) {
                 printf("Arma do jogador roubada!\n");
-                escolheArma(player,DESARMADO);
+                escolheArma(player,DESARMADO,status);
             }
             // fazer chances de errar ataque
             player->vidaAtual -= inimigo->dano;
@@ -129,7 +190,7 @@ void ataque(Player *player, Inimigo *inimigo)
             srand(time(NULL));
             sorteio = rand() % 50;
             if (sorteio%2==0) {
-                printf("mordida de inseto!+ 1 dano por turno\n");
+                printf("mordida de inseto!+ 1 dano\n");
                 danoAdd += 1;
             }
             break;
@@ -138,7 +199,7 @@ void ataque(Player *player, Inimigo *inimigo)
     printf("inimigo atacou!\n");
     player->vidaAtual -= inimigo->dano + danoAdd;
     printf("vida do jogador:%d\n", player->vidaAtual);
-    
+    status->textOutputI = "inimigo atacou";
 }
 
 void combate(Player* player, Inimigo *inimigo){

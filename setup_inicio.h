@@ -11,6 +11,6 @@ void statusInimigo(Inimigo inimigo);
 
 void selecionaItem(int input, Player*);
 
-void criaJogador(Player*);
+void criaJogador(Player*, Status*);
 
 #endif
