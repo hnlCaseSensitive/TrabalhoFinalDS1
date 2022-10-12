@@ -1,13 +1,10 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 #include "gameLogic.h"
 
 // createMap : void -> *GrafoLa
-// cria um mapa de tamanho aleatorio entre 2 e 15 aplicando os tipos aleatorios a cada um e criando 
+// cria um mapa de tamanho aleatorio entre 2 e 15 aplicando os tipos aleatorios a cada um e criando
 // caminhos aleatorios entre o start e o end
 GrafoLA *createMap(void){
-    int size = (rand() % 13) + 2;
+    int size = (rand() % 15) + 3;
 
     GrafoLA* map = criaGrafoLA(size);
 

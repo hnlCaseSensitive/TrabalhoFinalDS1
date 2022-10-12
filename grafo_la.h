@@ -2,7 +2,7 @@
 #define _GRAFO_LA_H_
 
 typedef enum{
-  EXPLORATORIA = 0, 
+  EXPLORATORIA = 0,
   OUTRA /* Nao Exploratoria */
 } tipoAresta;
 
@@ -15,8 +15,8 @@ typedef enum{
 typedef enum{
    START = 0,
    END,
-   KEY,
-   ITEM
+   HEAL,
+   ATK
 } style;
 
 typedef struct arGrafo{
@@ -36,7 +36,7 @@ typedef struct noGrafo{
    int pai; // Util para DFS e BFS
    int distInicio; // Util para BFS
 
-   int tipo;
+   style tipo;
 
 
 } NoGrafo;
@@ -45,10 +45,10 @@ typedef struct{
    int numVertices; // Numero de vertices
    NoGrafo *vertices; // Vetor de vertices
    int timestamp; // Util para DFS e BFS
-} GrafoLA; 
+} GrafoLA;
 
 
-// Funcao que cria um grafo 
+// Funcao que cria um grafo
 GrafoLA *criaGrafoLA(int tamanho);
 
 // Funcao que insere uma aresta em um grafo
