@@ -99,6 +99,10 @@ void Draw_Window()
             }
             
             DrawText(foe->nome, 20, 60, 20, DARKBLUE);
+            DrawText(TextFormat("Vida: %i", foe->vida), 200, 60, 20, DARKBLUE);
+            
+            DrawText("Player", 20, 80, 20, DARKBLUE);
+            DrawText(TextFormat("Vida: %i", player->vidaAtual), 200, 80, 20, DARKBLUE);
 
 
             DrawText("COMBATE (f pra voltar)", 20, 100, 40, DARKGREEN);
@@ -179,13 +183,14 @@ void Update_Window()
             }
             /* mapa */
 
-            //if (IsKeyPressed(KEY_C)) {emCombate*=-1; } // TEMP
+            if (IsKeyPressed(KEY_C)) {emCombate*=-1; } // TEMP
 
 
             switch(curr->tipo){
                 case START:
                     if (player->vidaAtual<=0) currentScreen = ENDING;
                     player->vidaAtual = player->vidaMaxima;
+                    
                     if(IsKeyPressed(KEY_ENTER)){
                         curr_dest = curr->lista;
                         currentScreen = ESCOLHEDEST;
