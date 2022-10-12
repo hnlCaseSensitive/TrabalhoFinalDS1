@@ -37,6 +37,7 @@ typedef struct Inimigo{
     TiposInimigo tipo; // Tipo do inimigo
     char nome[128];
     int chancePontoFraco; // Chance do inimigo expor seu ponto fraco (em %)
+    TiposDano vulnerabilidade;
 } Inimigo;
 
 Inimigo *sorteiaInimigo();
@@ -44,6 +45,11 @@ Inimigo *sorteiaInimigo();
 void combate(Player* player, Inimigo *inimigo);
 
 void escolheArma(Player *player, int arma);
+
+void ataque(Player*, Inimigo*);
+
+void initArma(Player *);
+
 
 #endif
 

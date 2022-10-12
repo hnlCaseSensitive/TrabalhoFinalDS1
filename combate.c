@@ -19,6 +19,7 @@ Inimigo* sorteiaInimigo(){
         aux->tipo = INSETO;
         strcpy(aux->nome, "inseto generico");
         aux->chancePontoFraco = 35;
+        aux->vulnerabilidade = PERFURACAO;
     }
     else if (sorteio > 80){
         aux->dano = 10;
@@ -26,6 +27,7 @@ Inimigo* sorteiaInimigo(){
         aux->tipo = ROBO;
         strcpy(aux->nome, "robo generico");
         aux->chancePontoFraco = 35;
+        aux->vulnerabilidade = ELETRICO;
     }
     else {
         aux->dano = 10;
@@ -33,13 +35,15 @@ Inimigo* sorteiaInimigo(){
         aux->tipo = HUMANO;
         strcpy(aux->nome, "humano generico");
         aux->chancePontoFraco = 35;
+        aux->vulnerabilidade = ACIDO;
     }
+            printf("Vida:%d\n", aux->vida);
     return aux;
 }
 
 void escolheArma(Player *player, int escolha)
 {
-    printf("Escolha da arma\n");
+    //printf("Escolha da arma\n");
     // arma.tipoDano
     switch(escolha)
     {
@@ -59,6 +63,48 @@ void escolheArma(Player *player, int escolha)
         {
             player->armaAtual = player->arma[DESARMADO]; 
         } break;
+    }
+    
+}
+
+//inicializa armas do jogador
+void initArma(Player *player)
+{
+    player->armaAtual.dano = 40;
+}
+
+void ataque(Player *player, Inimigo *inimigo)
+{
+    int sorteio = 0;
+    initArma(player); //tirar daqui dps
+
+    printf("Vida inimigo:%d\n", inimigo->vida);
+    // Turno jogador:
+    printf("Turno jogador\n");
+    if (inimigo->vulnerabilidade==player->armaAtual.tipoDano)
+        inimigo->vida -= (player->armaAtual.dano + 10);
+    else
+        inimigo->vida -= player->armaAtual.dano;
+    
+    // Turno inimigo:
+    switch (inimigo->tipo)
+    {
+        case HUMANO: // leva mais dano de acido, chances de roubar arma do jogador
+            
+            srand(time(NULL));
+            sorteio = rand() % 50;
+            if (sorteio==45) {
+                printf("Arma do jogador roubada!\n");
+                escolheArma(player,DESARMADO);
+            }
+            break;
+        case ROBO: // leva mais dano de eletricidade
+            
+            break;
+        case INSETO: // perfurado
+            
+            break;
+            
     }
     
 }
@@ -177,3 +223,5 @@ void combate(Player* player, Inimigo *inimigo){
     if (player->vidaAtual > 0)
         player->vidaAtual += 25;
 }
+
+

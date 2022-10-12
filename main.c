@@ -63,7 +63,7 @@ void Draw_Window()
             // TODO
             if (emCombate>0) {
                 DrawRectangle(0, 0, screenWidth, screenHeight/4, GREEN); DrawText("INIMIGO!!!", 20, 20, 40, DARKGREEN);
-                currentScreen = COMBATE;
+                //currentScreen = COMBATE;
             }
         } break;
         case COMBATE:
@@ -77,6 +77,8 @@ void Draw_Window()
             }
             //DrawRectangle(0, 0, screenWidth, screenHeight, GREEN);
             DrawText("COMBATE (f pra voltar)", 20, 20, 40, DARKGREEN);
+            DrawText("Aperte Y para atacar", 20, 50, 40, DARKGREEN); // opcao de trocar armas
+            DrawText("Aperte U para trocar armas", 20, 90, 40, DARKGREEN);
             if (!emCombate) currentScreen = GAMEPLAY;
             if (IsKeyPressed(KEY_F)) currentScreen = GAMEPLAY;
         } break;
@@ -157,6 +159,7 @@ void Update_Window()
                 printf("combm\n");
                 foe = sorteiaInimigo();
                 printf("Inimigo encontrado:%s\n", foe->nome);
+                currentScreen = COMBATE;
             }
 
             
@@ -174,10 +177,6 @@ void Update_Window()
         case COMBATE:
         {
             if (!emCombate) currentScreen = GAMEPLAY;
-            //sleep(1);
-            // funcao n ta controlando isso?
-            //combate(player,foe); // TODO arrumar funcao, inimigo n morre
-            printf("Escolha de arma:\n");
             // MENU DE ARMAS
             if (IsKeyPressed(KEY_F1)) {
                 printf("Abriu menu armas\n");
@@ -222,8 +221,10 @@ void Update_Window()
                         if (IsKeyPressed(KEY_LEFT)) {
                             corRetanguloArma3 = DARKGREEN;
                             armaSelection = ARMA2;
-                            
-                        } break;
+                        } 
+                        if (IsKeyPressed(KEY_ENTER))
+                            escolheArma(player,ARMA3);
+                        break;
                     case ARMA4:
                         corRetanguloArma4 = destaque;
                         if (IsKeyPressed(KEY_RIGHT)) {
@@ -233,14 +234,31 @@ void Update_Window()
                         if (IsKeyPressed(KEY_LEFT)) {
                             corRetanguloArma4 = GREEN;
                             armaSelection = ARMA3;
-                            
-                        } break;
+                        }
+                        if (IsKeyPressed(KEY_ENTER))
+                            escolheArma(player,ARMA4);
+                        break;
                 }
             }
             
             //escolheArma(player,0);
-            printf("Arma atual:%s\n", player->armaAtual.desc);
-            emCombate = -1;
+            //printf("Arma atual:%s\n", player->armaAtual.desc);
+            
+            // flag p ver se ta em combate em vez disso
+            if (IsKeyPressed(KEY_Y)) {
+                if (foe->vida>0)
+                    ataque(player,foe);
+                    if (foe->vida<=0 && emCombate>0) {
+                        printf("inimigo perdeu\n");
+                        emCombate = -1;
+                    }
+                    if (player->vidaAtual<=0 && emCombate>0) {
+                        printf("vc perdeu\n");
+                        emCombate = -1;
+                    }
+                if (emCombate<0) // arrumar pra gameover se o jogador morrer dps
+                    currentScreen = GAMEPLAY;
+            }
 
         } break;
         
