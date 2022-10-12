@@ -4,6 +4,13 @@
 #include <unistd.h>
 #include "gui.h"
 
+Texture2D title;
+Texture2D choose;
+Texture2D over;
+Texture2D heal;
+Texture2D sucess;
+Texture2D start;
+Texture2D combat;
 
 int main(void)
 {
@@ -18,6 +25,34 @@ int main(void)
     curr = &Mapa->vertices[0];
 
     status = (Status*) malloc(sizeof(Status));
+
+    Image titlescreen = LoadImage("./TITLE.png");
+    title = LoadTextureFromImage(titlescreen);
+    UnloadImage(titlescreen);
+
+    Image choosedest = LoadImage("./CHOOSEDEST.png");
+    choose = LoadTextureFromImage(choosedest);
+    UnloadImage(choosedest);
+
+    Image gameover = LoadImage("./GAMEOVER.png");
+    over = LoadTextureFromImage(gameover);
+    UnloadImage(gameover);
+
+    Image healscreen = LoadImage("./HEAL.png");
+    heal = LoadTextureFromImage(healscreen);
+    UnloadImage(healscreen);
+
+    Image success_screen = LoadImage("./SUCCESS.png");
+    sucess = LoadTextureFromImage(success_screen);
+    UnloadImage(success_screen);
+
+    Image start_screen = LoadImage("./START.png");
+    start = LoadTextureFromImage(start_screen);
+    UnloadImage(start_screen);
+
+    Image combate_screen = LoadImage("./COMBATE.png");
+    combat = LoadTextureFromImage(combate_screen);
+    UnloadImage(combate_screen);
 
     // loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
@@ -39,6 +74,14 @@ int main(void)
     CloseWindow();        // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 
+    UnloadTexture(title);
+    UnloadTexture(choose);
+    UnloadTexture(over);
+    UnloadTexture(heal);
+    UnloadTexture(sucess);
+    UnloadTexture(start);
+    UnloadTexture(combat);
+
     return 0;
 }
 
@@ -48,25 +91,24 @@ void Draw_Window()
     {
         case TITLE:
         {
-            DrawRectangle(0, 0, screenWidth, screenHeight, GREEN);
-            DrawText("DUNGEON CRAWLER", 20, 20, 40, DARKGREEN);
-            DrawRectangle(150, 100, 300, 50, corRetanguloPlay); DrawText("START", 180, 120, 20, WHITE);
-            DrawRectangle(150, 150, 300, 50, corRetanguloExit); DrawText("EXIT", 180, 160, 20, WHITE);
+
+            DrawTexture(title, 0, 0, WHITE);
+            DrawText("START", 180, 220, 40, corRetanguloPlay);
+            DrawText("EXIT", 180, 260, 40, corRetanguloExit);
         } break;
         case GAMEPLAY:
         {
-            DrawRectangle(0, 0, screenWidth, screenHeight, PURPLE);
+            DrawRectangle(0, 0, screenWidth, screenHeight, WHITE);
 
 
             if(curr->tipo == START){
-                    DrawText("Start: ", 10, 10, 30, WHITE);
+                    DrawTexture(start, 0, 0, WHITE);
                 }else if(curr->tipo == HEAL){
-                    DrawText("HEAL: ", 10 , 10, 30, WHITE);
-
+                    DrawTexture(heal, 0, 0, WHITE);
                 }
 
                 if(curr->tipo != END){
-                    DrawRectangle(150, 100, 300, 50, DARKBLUE); DrawText("Move", 180, 120, 20, WHITE);
+                    DrawText("Move", 180, 200, 40, RED);
                 }
 
 
@@ -74,23 +116,20 @@ void Draw_Window()
                 DrawRectangle(200, 200, screenWidth/4, screenHeight/5, YELLOW); DrawText("Vida", 200, 0, 20, MAROON);
             }
 
-            // TODO
-            if (emCombate>0) {
-                DrawRectangle(0, 0, screenWidth, screenHeight/4, GREEN); DrawText("INIMIGO!!!", 20, 20, 40, DARKGREEN);
-            }
+
+
         } break;
 
         case ESCOLHEDEST:
         {
-            DrawRectangle(0, 0, screenWidth, screenHeight, WHITE);
-            DrawText("Escolha o destino: ", 100, 10, 30, BLACK);
-            DrawRectangle(150, 100, 300, 50, DARKBLUE); DrawText(TextFormat("%d", curr_dest->chaveDest), 180, 120, 20, WHITE);
+            DrawTexture(choose, 0, 0, WHITE);
+            DrawText(TextFormat("%d", curr_dest->chaveDest), 600, 200, 40, RED);
 
         }break;
 
         case COMBATE:
         {
-            DrawRectangle(0, 0, screenWidth, screenHeight, corBackgroundCombate);
+            DrawTexture(combat, 0, 0, WHITE);
 
             if(menuArmas>0) { //abre menu p escolher arma
                 DrawRectangle(0, 0, screenWidth/4, screenHeight/5, corRetanguloArma1); DrawText("ARMA 1", 0, 0, 30, BLACK);
@@ -98,21 +137,21 @@ void Draw_Window()
                 DrawRectangle(400, 0, screenWidth/4, screenHeight/5, corRetanguloArma3); DrawText("ARMA 3", 400, 0, 30, BLACK);
                 DrawRectangle(600, 0, screenWidth/4, screenHeight/5, corRetanguloArma4); DrawText("ARMA 4", 600, 0, 30, BLACK);
             }
-            DrawText(foe->nome, 20, 60, 20, DARKBLUE);
-            DrawText(TextFormat("Vida: %i", foe->vida), 200, 60, 20, DARKBLUE);
+            DrawText(foe->nome, 20, 100, 20, DARKBLUE);
+            DrawText(TextFormat("Vida: %i", foe->vida), 200, 100, 20, DARKBLUE);
 
-            DrawText("Player", 20, 80, 20, DARKBLUE);
-            DrawText(TextFormat("Vida: %i", player->vidaAtual), 200, 80, 20, DARKBLUE);
+            DrawText("Player", 20, 120, 20, DARKBLUE);
+            DrawText(TextFormat("Vida: %i", player->vidaAtual), 200, 120, 20, DARKBLUE);
 
-             DrawText(TextFormat("out: %s", status->textOutputJ), 180,100,20, corOutputJ);
-             DrawText(TextFormat("out: %s", status->textOutputI), 180,120,20, corOutputI);
+             DrawText(TextFormat("out: %s", status->textOutputJ), 180,140,20, corOutputJ);
+             DrawText(TextFormat("out: %s", status->textOutputI), 180,160,20, corOutputI);
 
 
-            DrawText(TextFormat("Arma:%s",status->armaEquipada), 0, 120, 10, DARKGREEN);
-            DrawText("COMBATE", 20, 140, 20, DARKGREEN);
-            DrawText("Aperte Y para atacar", 20, 180, 20, DARKGREEN);
-            DrawText("Aperte F para tentar fugir", 20, 200, 20, DARKGREEN);
-            DrawText("Aperte U para trocar armas", 20, 240, 20, DARKGREEN);
+            DrawText(TextFormat("Arma:%s",status->armaEquipada), 10, 160, 10, DARKGREEN);
+            DrawText("COMBATE", 20, 180, 20, DARKGREEN);
+            DrawText("Aperte Y para atacar", 20, 220, 20, DARKGREEN);
+            DrawText("Aperte F para tentar fugir", 20, 240, 20, DARKGREEN);
+            DrawText("Aperte U para trocar armas", 20, 280, 20, DARKGREEN);
 
 
         } break;
@@ -135,10 +174,12 @@ void Draw_Window()
 
         case ENDING:
         {
-            // TODO: Draw ENDING screen here!
-            DrawRectangle(0, 0, screenWidth, screenHeight, BLUE);
-            DrawText("GAMEOVER", 20, 20, 40, DARKBLUE);
-            DrawText("Jogar novamente?", 120, 220, 20, DARKBLUE);
+
+            if(player->vidaAtual > 0){
+                DrawTexture(sucess, 0, 0, WHITE);
+            }else{
+                DrawTexture(over, 0, 0, WHITE);
+            }
 
         } break;
         default: break;
@@ -154,9 +195,9 @@ void Update_Window()
             switch(menuSelection)
             {
                 case PLAY:
-                    corRetanguloPlay = DARKBLUE;
+                    corRetanguloPlay = RED;
                     if (IsKeyPressed(KEY_DOWN)) {
-                        corRetanguloPlay = BLUE;
+                        corRetanguloPlay = BLACK;
                         menuSelection = EXIT;
                     }
                     if (IsKeyPressed(KEY_ENTER)) {
@@ -164,9 +205,9 @@ void Update_Window()
                     }
                     break;
                 case EXIT:
-                    corRetanguloExit = DARKBLUE;
+                    corRetanguloExit = RED;
                     if (IsKeyPressed(KEY_UP)) {
-                        corRetanguloExit = BLUE;
+                        corRetanguloExit = BLACK;
                         menuSelection = PLAY;
                     }
                     if (IsKeyPressed(KEY_ENTER)) {
@@ -242,11 +283,11 @@ void Update_Window()
 
                 if(IsKeyPressed(KEY_ENTER)){
                     *curr = Mapa->vertices[curr_dest->chaveDest];
-                    if( ((rand() % 10) + 1) * curr_dest->distancia > 50){
-                        emCombate*=-1;
-                    }else{
-                        currentScreen = GAMEPLAY;
-                    }
+                    //if( ((rand() % 10) + 1) * curr_dest->distancia > 50){
+                     //   emCombate*=-1;
+                    //}else{
+                    currentScreen = GAMEPLAY;
+                    //}
                 }
 
             } break;
@@ -259,67 +300,25 @@ void Update_Window()
             if (IsKeyPressed(KEY_A)) printf("arma:%d\n", player->armaAtual.tipoDano);
 
             if (menuArmas>0) {
-                switch (armaSelection)
+
+                switch (player->armaAtual.tipoDano)
                 {
-                    case ARMA1:
-                        corRetanguloArma1 = destaque;
-                        if (IsKeyPressed(KEY_RIGHT)) {
-                            corRetanguloArma1 = DARKGREEN;
-                            armaSelection = ARMA2;
-                        }
-                        if (IsKeyPressed(KEY_LEFT)) {
-                            corRetanguloArma1 = DARKGREEN;
-                            armaSelection = ARMA4;
-                        }
-                        if (IsKeyPressed(KEY_ENTER)) {
-                            escolheArma(player,ARMA1,status);
-                            menuArmas = -1;
-                        }
+                    case ACIDO:
+                        escolheArma(player, ARMA2, status);
+                        menuArmas = -1;
                         break;
-                    case ARMA2:
-                        corRetanguloArma2 = destaque;
-                        if (IsKeyPressed(KEY_RIGHT)) {
-                            corRetanguloArma2 = GREEN;
-                            armaSelection = ARMA3;
-                        }
-                        if (IsKeyPressed(KEY_LEFT)) {
-                            corRetanguloArma2 = GREEN;
-                            armaSelection = ARMA1;
-                        }
-                        if (IsKeyPressed(KEY_ENTER)) {
-                            escolheArma(player,ARMA2,status);
-                            menuArmas = -1;
-                        }
+                    case ELETRICO:
+                        escolheArma(player, ARMA3, status);
+                        menuArmas = -1;
                         break;
-                    case ARMA3:
-                        corRetanguloArma3 = destaque;
-                        if (IsKeyPressed(KEY_RIGHT)) {
-                            corRetanguloArma3 = DARKGREEN;
-                            armaSelection = ARMA4;
-                        }
-                        if (IsKeyPressed(KEY_LEFT)) {
-                            corRetanguloArma3 = DARKGREEN;
-                            armaSelection = ARMA2;
-                        }
-                        if (IsKeyPressed(KEY_ENTER)) {
-                            escolheArma(player,ARMA3,status);
-                            menuArmas = -1;
-                        }
+                    case PERFURACAO:
+                        escolheArma(player, ARMA4, status);
+                        menuArmas = -1;
+
                         break;
-                    case ARMA4:
-                        corRetanguloArma4 = destaque;
-                        if (IsKeyPressed(KEY_RIGHT)) {
-                            corRetanguloArma4 = GREEN;
-                            armaSelection = ARMA1;
-                        }
-                        if (IsKeyPressed(KEY_LEFT)) {
-                            corRetanguloArma4 = GREEN;
-                            armaSelection = ARMA3;
-                        }
-                        if (IsKeyPressed(KEY_ENTER)) {
-                            escolheArma(player,ARMA4,status);
-                            menuArmas = -1;
-                        }
+                    case DESARMADO:
+                        escolheArma(player, ARMA1, status);
+                        menuArmas = -1;
                         break;
                 }
             }
@@ -350,8 +349,7 @@ void Update_Window()
                 }
                 if (player->vidaAtual <= 0) {
                     printf("vc perdeu\n");
-                    emCombate = -1;
-                    //currentScreen = ENDING;
+                    currentScreen = ENDING;
                 }
 
                 if (emCombate<0) {

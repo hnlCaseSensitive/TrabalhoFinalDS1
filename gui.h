@@ -17,7 +17,7 @@ MenuSelection menuSelection = PLAY;
 ItemSelection itemSelection = LUVA;
 ArmaSelection armaSelection = DESARMADO;
 
-const int screenWidth = 800;
+const int screenWidth = 850;
 const int screenHeight = 450;
 int framesCounter = 0;          // Useful to count frames
 
@@ -35,8 +35,8 @@ int emCombate = -1;
 
 
 // ================= CORES =====================
-Color corRetanguloPlay = BLUE;
-Color corRetanguloExit = BLUE;
+Color corRetanguloPlay = RED;
+Color corRetanguloExit = BLACK;
 
 Color corRetanguloLuva = BLUE;
 Color corRetanguloLaser = BLUE;

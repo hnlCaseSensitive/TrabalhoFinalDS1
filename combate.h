@@ -36,7 +36,7 @@ typedef struct Inimigo{
     int vida; // Vida do inimigo
     int dano; // Dano que o inimigo da
     TiposInimigo tipo; // Tipo do inimigo
-    char nome[128];
+    char nome[200];
     int chancePontoFraco; // Chance do inimigo expor seu ponto fraco (em %)
     TiposDano vulnerabilidade;
 } Inimigo;

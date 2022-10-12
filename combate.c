@@ -11,7 +11,7 @@ Inimigo* sorteiaInimigo(){
 
     sorteio = rand() % 100;
 
-    //printf ("sorteio: %i", sorteio);
+    printf ("sorteio: %i", sorteio);
     // E seleciona um inimigo baseado no numero sorteado
     if (sorteio >= 75){
         aux->dano = 10;
@@ -49,7 +49,7 @@ void escolheArma(Player *player, int escolha, Status *status)
     {
         case ACIDO:
         {
-            status->armaEquipada = "Acido"; 
+            status->armaEquipada = "Acido";
         } break;
         case ELETRICO:
         {
@@ -64,7 +64,7 @@ void escolheArma(Player *player, int escolha, Status *status)
             status->armaEquipada = "Desarmado";
         } break;
     }
-    
+
 }
 
 //inicializa armas do jogador
@@ -144,7 +144,7 @@ void turnoInimigo(Player *player, Inimigo *inimigo, Status *status)
                 danoAdd += 1;
             }
             break;
-            
+
     }
     printf("inimigo atacou!\n");
     player->vidaAtual -= inimigo->dano + danoAdd;
