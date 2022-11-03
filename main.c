@@ -338,7 +338,7 @@ void Update_Window()
                     //currentOutput = status->textOutputI;
                 }
                     //ataque(player,foe);
-                }
+            }
             //}
 
 
@@ -346,10 +346,12 @@ void Update_Window()
                 if (foe->vida <= 0) {
                     printf("inimigo perdeu\n");
                     emCombate = -1;
+                    free(foe);
                 }
                 if (player->vidaAtual <= 0) {
                     printf("vc perdeu\n");
                     currentScreen = ENDING;
+                    free(foe);
                 }
 
                 if (emCombate<0) {
