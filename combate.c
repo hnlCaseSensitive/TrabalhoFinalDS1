@@ -37,7 +37,8 @@ Inimigo* sorteiaInimigo(){
         aux->chancePontoFraco = 35;
         aux->vulnerabilidade = ACIDO;
     }
-            printf("Vida:%d\n", aux->vida);
+    
+    //printf("Vida:%d\n", aux->vida);
     return aux;
 }
 

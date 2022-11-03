@@ -1,3 +1,7 @@
+#ifndef _GUI_H_
+#define _GUI_H_
+
+
 #include "combate.h"
 
 typedef enum GameScreen { LOGO = 0, TITLE, GAMEPLAY,COMBATE, ITEM_ESPECIAL, ENDING, ESCOLHEDEST} GameScreen;
@@ -56,3 +60,4 @@ Color corOutputI = DARKBLUE;
 Color destaque = GRAY;
 //===============================================//
 
+#endif
