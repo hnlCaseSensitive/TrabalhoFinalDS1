@@ -76,19 +76,19 @@ void initArma(Player *player)
         switch (player->armaAtual.dano)
     {
         case ACIDO:
-            sorteio = (rand() % (30 - 5 + 1)) + 10;
+            sorteio = (rand() % (26)) + 10;
             player->armaAtual.dano = 5 + sorteio;
             break;
         case ELETRICO:
-            sorteio = (rand() % (30 - 5 + 1)) + 10;
+            sorteio = (rand() % (26)) + 10;
             player->armaAtual.dano = 5 + sorteio;
             break;
         case PERFURACAO:
-            sorteio = (rand() % (30 - 5 + 1)) + 10;
+            sorteio = (rand() % (26)) + 10;
             player->armaAtual.dano = 5 + sorteio;
             break;
         case DESARMADO:
-            sorteio = (rand() % (5 + 1));
+            sorteio = (rand() % (6));
             player->armaAtual.dano = 1 + sorteio;
     }
 }

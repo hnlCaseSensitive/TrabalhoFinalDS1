@@ -26,31 +26,31 @@ int main(void)
 
     status = (Status*) malloc(sizeof(Status));
 
-    Image titlescreen = LoadImage("./TITLE.png");
+    Image titlescreen = LoadImage("./resources/TITLE.png");
     title = LoadTextureFromImage(titlescreen);
     UnloadImage(titlescreen);
 
-    Image choosedest = LoadImage("./CHOOSEDEST.png");
+    Image choosedest = LoadImage("./resources/CHOOSEDEST.png");
     choose = LoadTextureFromImage(choosedest);
     UnloadImage(choosedest);
 
-    Image gameover = LoadImage("./GAMEOVER.png");
+    Image gameover = LoadImage("./resources/GAMEOVER.png");
     over = LoadTextureFromImage(gameover);
     UnloadImage(gameover);
 
-    Image healscreen = LoadImage("./HEAL.png");
+    Image healscreen = LoadImage("./resources/HEAL.png");
     heal = LoadTextureFromImage(healscreen);
     UnloadImage(healscreen);
 
-    Image success_screen = LoadImage("./SUCCESS.png");
+    Image success_screen = LoadImage("./resources/SUCCESS.png");
     sucess = LoadTextureFromImage(success_screen);
     UnloadImage(success_screen);
 
-    Image start_screen = LoadImage("./START.png");
+    Image start_screen = LoadImage("./resources/START.png");
     start = LoadTextureFromImage(start_screen);
     UnloadImage(start_screen);
 
-    Image combate_screen = LoadImage("./COMBATE.png");
+    Image combate_screen = LoadImage("./resources/COMBATE.png");
     combat = LoadTextureFromImage(combate_screen);
     UnloadImage(combate_screen);
 
