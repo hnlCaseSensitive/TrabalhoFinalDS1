@@ -6,6 +6,7 @@
 typedef enum{
     HEAL = 0,
     DMG = 1,
+    ITEM = 2,
     SPECIAL
 }tipo;
 
@@ -22,9 +23,21 @@ typedef struct {
     skill** items;
 } jogador;
 
-Inimigo *sorteiaInimigo();
+typedef enum {
+    CROOK = 0,
+    MAFIA_BOSS = 1,
+    KING = 2,
+    CEO_OF_EVIL
+} enemy_type;
 
-void combate(Player* player, Inimigo *inimigo);
+typdef struct {
+    float hp, stm;
+    int lvl;
+    skill* tecs;
+    enemy_type self_type;
+}Inimigo;
+
+void combate(Player* player, Inimigo inimigo);
 
 void escolheArma(Player *player, int arma, Status *status);
 
