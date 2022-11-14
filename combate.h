@@ -10,6 +10,16 @@ typedef enum{
     SPECIAL
 }tipo;
 
+typedef enum{
+    WATER = 0,
+    FIRE = 1,
+    METAL = 2,
+    EARTH = 3,
+    WOOD = 4,
+    YIN = 5,
+    YANG = 6
+}elements;
+
 typedef struct {
     char nome[30];
     float valor, cost;
@@ -35,6 +45,7 @@ typdef struct {
     int lvl;
     skill* tecs;
     enemy_type self_type;
+    elements self_element;
 }Inimigo;
 
 void combate(Player* player, Inimigo inimigo);
