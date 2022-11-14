@@ -12,7 +12,7 @@ typedef enum{
 
 typedef struct {
     char nome[30];
-    float valor;
+    float valor, cost;
     tipo self_type;
 }skill;
 
