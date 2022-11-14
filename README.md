@@ -1,5 +1,5 @@
 # TrabalhoFinalDS1
-## Todos
+## Todo's
 ### Skills
 
 - [ ] skill1
