@@ -27,11 +27,17 @@ typedef struct {
 }skill;
 
 typedef struct {
-    float hp, stm;
+    char name[30];
+    float hp, stm, max_hp, max_stm;
     int lvl, xp;
     skill tecs[5];
-    skill** items;
+    bag* items;
 } jogador;
+
+typedef struct{
+    skill info;
+    bag* next;
+} bag;
 
 typedef enum {
     CROOK = 0,
@@ -40,30 +46,14 @@ typedef enum {
     CEO_OF_EVIL
 } enemy_type;
 
-typdef struct {
-    float hp, stm;
+typedef struct{
+    char name[30];
+    float hp, stm, max_hp, max_stm;
     int lvl;
     skill* tecs;
     enemy_type self_type;
     elements self_element;
-}Inimigo;
+} Inimigo;
 
-void combate(Player* player, Inimigo inimigo);
-
-void escolheArma(Player *player, int arma, Status *status);
-
-void ataque(Player*, Inimigo*);
-
-void turnoJogador(Player *player, Inimigo *inimigo, Status *status);
-
-void turnoInimigo(Player *player, Inimigo *inimigo, Status *status);
-
-void output(Status *status, char *text);
-
-void initArma(Player *);
-
-void selecionaItem(int input, Player*);
-
-void criaJogador(Player*, Status*);
 #endif
 
