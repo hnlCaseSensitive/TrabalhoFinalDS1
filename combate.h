@@ -55,5 +55,11 @@ typedef struct{
     elements self_element;
 } Inimigo;
 
+jogador* criaJogador(void);
+
+void destroiLista(bag* b);
+
+void destroiJogador(jogador* j);
+
 #endif
 
