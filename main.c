@@ -183,8 +183,8 @@ void Screen_gameplay_update()
     }
     switch(curr->tipo){
         case START:
-            if (player->vidaAtual<=0) currentScreen = ENDING;
-            player->vidaAtual = player->vidaMaxima;
+            if (player->hp <=0) currentScreen = ENDING;
+            player->hp = player->max_hp;
 
             if(IsKeyPressed(KEY_ENTER)){
                 curr_dest = curr->lista;
@@ -200,7 +200,7 @@ void Screen_gameplay_update()
                 currentScreen = ESCOLHEDEST;
             }
             break;
-        case ATK:
+        case FIGHT:
             curr_dest = curr->lista;
             currentScreen = ESCOLHEDEST;
             emCombate*=-1;

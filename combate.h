@@ -67,7 +67,7 @@ const skill basic_punch = {
     {"basic punch"},
     -10.0,
     0.0,
-    ATK,
+    DMG,
     YANG
 };
 
