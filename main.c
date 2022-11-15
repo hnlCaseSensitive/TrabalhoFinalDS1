@@ -45,7 +45,6 @@ int main(void)
     currentScreen = TITLE;
    // Screen_title_init();
 
-    // loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
         // Update
@@ -88,7 +87,8 @@ int main(void)
     UnloadTexture(sucess);
     UnloadTexture(start);
     UnloadTexture(combat);
-
+    destroiJogador(player);
+    
     return 0;
 }
 // =============== init TODO
