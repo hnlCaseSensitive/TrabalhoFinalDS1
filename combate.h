@@ -56,6 +56,21 @@ typedef struct{
     elements self_element;
 } Inimigo;
 
+/*
+    BASIC IDEA: HEAL SKILLS HAVE POSITIVE VALUES, WHILE ATK HAVE NEGATIVE, AND WE CHOOSE TARGETS BASED ON TYPE
+    ALL MELEE SKILL IS YANG AND ALL HEAL SKILL IS YIN
+    FIRE -> METAL -> WOOD -> EARTH -> WATER -> FIRE || WEAK 1.5X DMG || STRONG 0.5X DMG 
+    // MAYBE YING AND YANG ARE EFFECTIVE AGAINST EACH OTHER
+*/
+
+const skill basic_punch = {
+    {"basic punch"},
+    -10.0,
+    0.0,
+    ATK,
+    YANG
+};
+
 jogador* criaJogador(void);
 
 void destroiLista(bag* b);
