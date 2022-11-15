@@ -10,12 +10,9 @@ int main(void)
     InitWindow(screenWidth, screenHeight, "jogo -  basic window");
     SetTargetFPS(60);
 
-    player = (Player*) malloc(sizeof(Player));
-    foe = (Inimigo*) malloc(sizeof(Inimigo));
+    player = criaJogador();
     Mapa = createMap();
     curr = &Mapa->vertices[0];
-
-    status = (Status*) malloc(sizeof(Status));
 
     Image titlescreen = LoadImage("./resources/TITLE.png");
     title = LoadTextureFromImage(titlescreen);

@@ -65,16 +65,14 @@ int     Screen_ending_end();
 /* ===================================
  *              VARIAVEIS GLOBAIS
  * ===================================*/
-ArmaSelection armaSelection = DESARMADO;
 int framesCounter = 0;          // Useful to count frames
 
 //Jogo
-Player *player;
+jogador *player;
 Inimigo *foe;
 GrafoLA* Mapa;
 NoGrafo* curr;
 ArestaGrafo* curr_dest;
-Status *status;
 // Flags
 int jogadorExiste = 0;
 int menuArmas = -1;

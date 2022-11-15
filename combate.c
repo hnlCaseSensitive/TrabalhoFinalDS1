@@ -7,6 +7,9 @@ jogador* criaJogador(void){
     pj->max_hp = 100;
     pj->xp = 0;
     pj->lvl = 1;
+    strcpy(pj->name, "player 1");
+    pj->stm = 50;
+    pj->max_stm = 50;
 
     return pj;
 }

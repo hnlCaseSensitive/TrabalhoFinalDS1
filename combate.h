@@ -24,6 +24,7 @@ typedef struct {
     char nome[30];
     float valor, cost;
     tipo self_type;
+    elements self_element;
 }skill;
 
 typedef struct {
