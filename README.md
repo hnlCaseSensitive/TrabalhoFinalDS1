@@ -2,26 +2,26 @@
 ## Todo's
 
 
-UI:
+##UI:
 
-[ ] Fragmentação dos componentes da UI.
-[ ] Criação de menus.
- -> [ ] Tela de combate
- -> [ ] Main menu
- -> [ ] Criação de personagem (?);
+- [ ] Fragmentação dos componentes da UI.
+- [ ] Criação de menus.
+- -> [ ] Tela de combate
+- -> [ ] Main menu
+- -> [ ] Criação de personagem (?);
 
-COMBATE:
+##COMBATE:
 
-[ ] Criação de skills;
-[ ] Terminar a logica entre skills;
-[ ] Implementar IA para inimigos;
+- [ ] Criação de skills;
+- [ ] Terminar a logica entre skills;
+- [ ] Implementar IA para inimigos;
 
-MAPA:
+##MAPA:
 
-[ ] Melhorar a criação do grafo;
-[ ] Mais tipos de nodos.
+- [ ] Melhorar a criação do grafo;
+- [ ] Mais tipos de nodos.
 
-CODIGO:
+##CODIGO:
 
-[ ] Modularizar mais partes do código.
-[ ] Reduzir variaveis goblais.
+- [ ] Modularizar mais partes do código.
+- [ ] Reduzir variaveis goblais.
