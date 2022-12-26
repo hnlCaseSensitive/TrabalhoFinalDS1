@@ -25,6 +25,4 @@ void criaCaminhos(GrafoLA* grafo);
 //funcao que acha a chave do primeiro nodo que é do tipo passado.
 int findKey(GrafoLA* grafo, int tipo);
 
-//MONSTROS
-
 #endif

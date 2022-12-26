@@ -4,7 +4,7 @@
 #include "gameLogic.h"
 
 typedef enum{
-    HEAL = 0,
+    HEALING = 0,
     DMG = 1,
     ITEM = 2,
     SPECIAL
@@ -26,19 +26,20 @@ typedef struct {
     tipo self_type;
     elements self_element;
 }skill;
+/*
+typedef struct bag{
+    skill info;
+    bag* next;
+} bag;
+*/
 
 typedef struct {
     char name[30];
     float hp, stm, max_hp, max_stm;
     int lvl, xp;
     skill tecs[5];
-    bag* items;
+    //bag* items;
 } jogador;
-
-typedef struct{
-    skill info;
-    bag* next;
-} bag;
 
 typedef enum {
     CROOK = 0,
@@ -57,12 +58,6 @@ typedef struct{
 } Inimigo;
 
 /*
-    BASIC IDEA: HEAL SKILLS HAVE POSITIVE VALUES, WHILE ATK HAVE NEGATIVE, AND WE CHOOSE TARGETS BASED ON TYPE
-    ALL MELEE SKILL IS YANG AND ALL HEAL SKILL IS YIN
-    FIRE -> METAL -> WOOD -> EARTH -> WATER -> FIRE || WEAK 1.5X DMG || STRONG 0.5X DMG 
-    // MAYBE YING AND YANG ARE EFFECTIVE AGAINST EACH OTHER
-*/
-
 const skill basic_punch = {
     {"basic punch"},
     -10.0,
@@ -71,11 +66,23 @@ const skill basic_punch = {
     YANG
 };
 
+const skill basic_heal = {
+    {"basic heal"},
+    25,
+    10,
+    HEAL,
+    YIN
+};
+*/
 jogador* criaJogador(void);
 
-void destroiLista(bag* b);
+//void destroiLista(bag* b);
 
 void destroiJogador(jogador* j);
+
+Inimigo* criaInimigoRng(void);
+
+skill* criaSkillRng(void);
 
 #endif
 

@@ -41,7 +41,7 @@ int main(void)
     Image combate_screen = LoadImage("./resources/COMBATE.png");
     combat = LoadTextureFromImage(combate_screen);
     UnloadImage(combate_screen);
-    
+
     currentScreen = TITLE;
    // Screen_title_init();
 
@@ -88,7 +88,7 @@ int main(void)
     UnloadTexture(start);
     UnloadTexture(combat);
     destroiJogador(player);
-    
+
     return 0;
 }
 // =============== init TODO
@@ -138,17 +138,17 @@ void Screen_combate_draw()
         DrawRectangle(400, 0, screenWidth/4, screenHeight/5, corRetanguloArma3); DrawText("ARMA 3", 400, 0, 30, BLACK);
         DrawRectangle(600, 0, screenWidth/4, screenHeight/5, corRetanguloArma4); DrawText("ARMA 4", 600, 0, 30, BLACK);
     }
-    DrawText(foe->nome, 20, 100, 20, DARKBLUE);
-    DrawText(TextFormat("Vida: %i", foe->vida), 200, 100, 20, DARKBLUE);
+    DrawText(foe->name, 20, 100, 20, DARKBLUE);
+    DrawText(TextFormat("Vida: %i", foe->hp), 200, 100, 20, DARKBLUE);
 
     DrawText("Player", 20, 120, 20, DARKBLUE);
-    DrawText(TextFormat("Vida: %i", player->vidaAtual), 200, 120, 20, DARKBLUE);
+    DrawText(TextFormat("Vida: %i", player->hp), 200, 120, 20, DARKBLUE);
 
-        DrawText(TextFormat("out: %s", status->textOutputJ), 180,140,20, corOutputJ);
-        DrawText(TextFormat("out: %s", status->textOutputI), 180,160,20, corOutputI);
+        //DrawText(TextFormat("out: %s", status->textOutputJ), 180,140,20, corOutputJ);
+        //DrawText(TextFormat("out: %s", status->textOutputI), 180,160,20, corOutputI);
 
 
-    DrawText(TextFormat("Arma:%s",status->armaEquipada), 10, 160, 10, DARKGREEN);
+    //DrawText(TextFormat("Arma:%s",status->armaEquipada), 10, 160, 10, DARKGREEN);
     DrawText("COMBATE", 20, 180, 20, DARKGREEN);
     DrawText("Aperte Y para atacar", 20, 220, 20, DARKGREEN);
     DrawText("Aperte F para tentar fugir", 20, 240, 20, DARKGREEN);
@@ -157,12 +157,12 @@ void Screen_combate_draw()
 
 void Screen_ending_draw()
 {
-    if(player->vidaAtual > 0){
+    if(player->hp > 0){
         DrawTexture(sucess, 0, 0, WHITE);
     }else{
         DrawTexture(over, 0, 0, WHITE);
     }
-   
+
 }
 
 
@@ -178,7 +178,7 @@ void Screen_gameplay_update()
 {
     if (!jogadorExiste)
     {
-        criaJogador(player, status);
+        //player = criaJogador();
         jogadorExiste = 1;
     }
     switch(curr->tipo){
@@ -227,17 +227,14 @@ void Screen_escolhedest_update()
 
     if(IsKeyPressed(KEY_ENTER)){
         *curr = Mapa->vertices[curr_dest->chaveDest];
-        //if( ((rand() % 10) + 1) * curr_dest->distancia > 50){
-            //   emCombate*=-1;
-        //}else{
+
         currentScreen = GAMEPLAY;
-        //}
     }
 }
 
 void Screen_combate_update()
 {
-    
+
 }
 
 void Screen_ending_update()
@@ -252,7 +249,7 @@ void Screen_ending_update()
     }
     if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)) {
         CloseWindow();
-    }    
+    }
 }
 
 
@@ -284,7 +281,7 @@ bool Button_is_selected(int y, const char* text)
 	bool clicked = hovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
 
 	//if (clicked)
-		
+
 
 	return clicked;
 }
