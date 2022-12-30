@@ -15,7 +15,7 @@ jogador* criaJogador(void){
 
     return pj;
 }
-/*
+
 void destroiLista(bag* b){
     while(b != NULL){
         bag* next = b->next;
@@ -24,14 +24,14 @@ void destroiLista(bag* b){
     }
 }
 
-*/
+
 void destroiJogador(jogador* j){
-    //bag* temp = j->items;
-    //destroiLista(temp);
+    bag* temp = j->items;
+    destroiLista(temp);
     free(j);
 }
 
-Inimigo* criaInimigoRng(){
+Inimigo* criaInimigoRng(int lvl){
     char name[30];
 
     Inimigo* rando = (Inimigo*)malloc(sizeof(Inimigo));
@@ -42,27 +42,54 @@ Inimigo* criaInimigoRng(){
     name[29] = '\0';
 
     strcpy(rando->name, name);
-    rando->lvl = floor(rand() * 11);
-    rando->max_hp = (rando->lvl) * 100;
+    rando->lvl = lvl;
+    rando->max_hp = lvl * 100;
     rando->hp = rando->max_hp;
-    rando->self_element = floor(rand() * 7);
-    rando->max_stm = (rando->lvl) * 500 * rand();
-    rando->tecs = criaSkillRng();
-    rando->self_type = CROOK;
+    rando->max_stm = lvl * 500 * rand();
+    rando->tec = criaSkillRng();
 
     return rando;
 
 }
 
-skill* criaSkillRng(void){
-    skill* tec = (skill*)malloc(sizeof(skill));
-
-    tec->cost = floor(rand() * 10);
-    tec->self_element = DMG;
-    tec->valor = floor(rand() * 100);
-    strcpy(tec->nome, "skill rng");
-    tec->self_type = DMG;
+skill criaSkillRng(void){
+    skill tec;
+    tec.cost = floor(rand() * 10);
+    tec.valor = floor(rand() * 100);
+    strcpy(tec.nome, "skill rng");
+    tec.self_type = DMG;
 
     return tec;
 }
 
+void usage(int selected, jogador* j, Inimigo* i){
+    skill curr = j->tecs[selected];
+
+    if(j->stm < curr.cost){
+        return;
+    }
+
+    if(curr.self_type == HEAL){
+        j->hp += curr.valor;
+        if(j->hp > j->max_hp){
+            j->hp = j->max_hp;
+        }
+    }else{
+        i->hp -= curr.valor;
+    }
+    j->stm -= curr.cost;
+}
+
+void turnPass(Inimigo* i, jogador* j){
+    i->stm += i->max_stm / 10;
+    j->stm += j->max_stm / 10;
+}
+
+void AIusage(Inimigo* i, jogador* j){
+    if(i->stm < i->tec.cost){
+        return;
+    }
+
+    j->hp -= i->tec.valor;
+    i->stm -= i->tec.cost;
+}

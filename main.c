@@ -132,12 +132,6 @@ void Screen_combate_draw()
 {
     DrawTexture(combat, 0, 0, WHITE);
 
-    if(menuArmas>0) { //abre menu p escolher arma
-        DrawRectangle(0, 0, screenWidth/4, screenHeight/5, corRetanguloArma1); DrawText("ARMA 1", 0, 0, 30, BLACK);
-        DrawRectangle(200, 0, screenWidth/4, screenHeight/5, corRetanguloArma2); DrawText("ARMA 2", 200, 0, 30, BLACK);
-        DrawRectangle(400, 0, screenWidth/4, screenHeight/5, corRetanguloArma3); DrawText("ARMA 3", 400, 0, 30, BLACK);
-        DrawRectangle(600, 0, screenWidth/4, screenHeight/5, corRetanguloArma4); DrawText("ARMA 4", 600, 0, 30, BLACK);
-    }
     DrawText(foe->name, 20, 100, 20, DARKBLUE);
     DrawText(TextFormat("Vida: %i", foe->hp), 200, 100, 20, DARKBLUE);
 
@@ -176,11 +170,7 @@ void Screen_title_update()
 
 void Screen_gameplay_update()
 {
-    if (!jogadorExiste)
-    {
-        //player = criaJogador();
-        jogadorExiste = 1;
-    }
+
     switch(curr->tipo){
         case START:
             if (player->hp <=0) currentScreen = ENDING;
@@ -209,8 +199,6 @@ void Screen_gameplay_update()
 
 
     if (emCombate>0) {
-        //foe = sorteiaInimigo();
-        //printf("Inimigo encontrado:%s\n", foe->nome);
         currentScreen = COMBATE;
     }
 }
@@ -279,9 +267,6 @@ bool Button_is_selected(int y, const char* text)
 	DrawRectangleLinesEx(buttonRect, 2, color);
 
 	bool clicked = hovered && IsMouseButtonPressed(MOUSE_BUTTON_LEFT);
-
-	//if (clicked)
-
 
 	return clicked;
 }

@@ -10,79 +10,47 @@ typedef enum{
     SPECIAL
 }tipo;
 
-typedef enum{
-    WATER = 0,
-    FIRE = 1,
-    METAL = 2,
-    EARTH = 3,
-    WOOD = 4,
-    YIN = 5,
-    YANG = 6
-}elements;
-
 typedef struct {
     char nome[30];
     float valor, cost;
     tipo self_type;
-    elements self_element;
 }skill;
-/*
+
 typedef struct bag{
     skill info;
-    bag* next;
+    struct bag* next;
 } bag;
-*/
 
 typedef struct {
     char name[30];
     float hp, stm, max_hp, max_stm;
     int lvl, xp;
     skill tecs[5];
-    //bag* items;
+    bag* items;
 } jogador;
-
-typedef enum {
-    CROOK = 0,
-    MAFIA_BOSS = 1,
-    KING = 2,
-    CEO_OF_EVIL
-} enemy_type;
 
 typedef struct{
     char name[30];
     float hp, stm, max_hp, max_stm;
     int lvl;
-    skill* tecs;
-    enemy_type self_type;
-    elements self_element;
+    skill tec;
 } Inimigo;
 
-/*
-const skill basic_punch = {
-    {"basic punch"},
-    -10.0,
-    0.0,
-    DMG,
-    YANG
-};
-
-const skill basic_heal = {
-    {"basic heal"},
-    25,
-    10,
-    HEAL,
-    YIN
-};
-*/
 jogador* criaJogador(void);
 
-//void destroiLista(bag* b);
+void destroiLista(bag* b);
 
 void destroiJogador(jogador* j);
 
-Inimigo* criaInimigoRng(void);
+Inimigo* criaInimigoRng(int lvl);
 
-skill* criaSkillRng(void);
+skill criaSkillRng(void);
+
+void usage(int selected, jogador* j, Inimigo* i);
+
+void AIusage(Inimigo* i, jogador* j);
+
+void turnPass(Inimigo* i, jogador* j);
 
 #endif
 
