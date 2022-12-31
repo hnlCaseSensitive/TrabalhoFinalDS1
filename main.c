@@ -137,10 +137,10 @@ void Screen_combate_draw()
     DrawTexture(combat, 0, 0, WHITE);
 
     DrawText(foe->name, 20, 100, 20, DARKBLUE);
-    DrawText(TextFormat("Vida: %f", foe->hp), 200, 100, 20, DARKBLUE);
+    DrawText(TextFormat("Vida: %f", foe->hp), 200, 120, 20, DARKBLUE);
 
-    DrawText("Player", 20, 120, 20, DARKBLUE);
-    DrawText(TextFormat("Vida: %f", player->hp), 200, 120, 20, DARKBLUE);
+    DrawText("Player", 20, 140, 20, DARKBLUE);
+    DrawText(TextFormat("Vida: %f", player->hp), 200, 140, 20, DARKBLUE);
 
         //DrawText(TextFormat("out: %s", status->textOutputJ), 180,140,20, corOutputJ);
         //DrawText(TextFormat("out: %s", status->textOutputI), 180,160,20, corOutputI);
@@ -151,11 +151,11 @@ void Screen_combate_draw()
     DrawText("Aperte Y para atacar", 20, 220, 20, DARKGREEN);
     //DrawText("Aperte F para tentar fugir", 20, 240, 20, DARKGREEN);
     //DrawText("Aperte U para trocar armas", 20, 280, 20, DARKGREEN);
-    DrawText("CURR %d", 20, 250, 20, DARKGREEN);
+    DrawText("*", 230, 240 + (20 * tec_selec), 20, DARKGREEN);
     for(int i = 0; i < 5; i++){
         DrawText(TextFormat("%s, %f, %f", player->tecs[i].nome,
                                               player->tecs[i].cost,
-                                              player->tecs[i].valor), 250, 220 + (20 * i), 20, DARKGREEN);
+                                              player->tecs[i].valor), 250, 240 + (20 * i), 20, DARKGREEN);
     }
 }
 
@@ -232,7 +232,7 @@ void Screen_combate_update()
     //printf("COMBATEEEEEE!\n");
     if(emCombate == 0){
         free(foe);
-        foe = criaInimigoRng(player->lvl + floor(rand() * 2));
+        foe = criaInimigoRng(player->lvl + floor(rand() % 2));
         emCombate = 1;
     }
 

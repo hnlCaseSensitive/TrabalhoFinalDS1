@@ -47,7 +47,7 @@ Inimigo* criaInimigoRng(int lvl){
 
     strcpy(rando->name, name);
     rando->lvl = lvl;
-    rando->max_hp = lvl * 100;
+    rando->max_hp = lvl * 100.0;
     rando->hp = rando->max_hp;
     rando->max_stm = rand() % (lvl * 50);
     rando->tec = criaSkillRng();
