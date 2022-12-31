@@ -11,9 +11,9 @@
 
 ##COMBATE:
 
-- [v] Criação de skills;
-- [v] Terminar a logica entre skills;
-- [v] Implementar IA para inimigos;
+- [x] Criação de skills;
+- [x] Terminar a logica entre skills;
+- [x] Implementar IA para inimigos;
 
 ##MAPA:
 
