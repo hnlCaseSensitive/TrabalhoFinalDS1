@@ -2,6 +2,7 @@
 #include "setup_inicio.h"
 #include <unistd.h>
 #include "gui.h"
+#include <math.h>
 
 int main(void)
 {
@@ -49,6 +50,7 @@ int main(void)
     {
         // Update
         //----------------------------------------------------------------------------------
+        printf("%d", currentScreen);
         switch(currentScreen)
             {
                 case TITLE: Screen_title_update(); break;
@@ -111,6 +113,8 @@ void Screen_gameplay_draw()
             DrawTexture(start, 0, 0, WHITE);
         }else if(curr->tipo == HEAL){
             DrawTexture(heal, 0, 0, WHITE);
+        }else if(curr->tipo == FIGHT){
+            currentScreen = COMBATE;
         }
 
         if(curr->tipo != END){
@@ -133,10 +137,10 @@ void Screen_combate_draw()
     DrawTexture(combat, 0, 0, WHITE);
 
     DrawText(foe->name, 20, 100, 20, DARKBLUE);
-    DrawText(TextFormat("Vida: %i", foe->hp), 200, 100, 20, DARKBLUE);
+    DrawText(TextFormat("Vida: %f", foe->hp), 200, 100, 20, DARKBLUE);
 
     DrawText("Player", 20, 120, 20, DARKBLUE);
-    DrawText(TextFormat("Vida: %i", player->hp), 200, 120, 20, DARKBLUE);
+    DrawText(TextFormat("Vida: %f", player->hp), 200, 120, 20, DARKBLUE);
 
         //DrawText(TextFormat("out: %s", status->textOutputJ), 180,140,20, corOutputJ);
         //DrawText(TextFormat("out: %s", status->textOutputI), 180,160,20, corOutputI);
@@ -145,8 +149,14 @@ void Screen_combate_draw()
     //DrawText(TextFormat("Arma:%s",status->armaEquipada), 10, 160, 10, DARKGREEN);
     DrawText("COMBATE", 20, 180, 20, DARKGREEN);
     DrawText("Aperte Y para atacar", 20, 220, 20, DARKGREEN);
-    DrawText("Aperte F para tentar fugir", 20, 240, 20, DARKGREEN);
-    DrawText("Aperte U para trocar armas", 20, 280, 20, DARKGREEN);
+    //DrawText("Aperte F para tentar fugir", 20, 240, 20, DARKGREEN);
+    //DrawText("Aperte U para trocar armas", 20, 280, 20, DARKGREEN);
+    DrawText("CURR %d", 20, 250, 20, DARKGREEN);
+    for(int i = 0; i < 5; i++){
+        DrawText(TextFormat("%s, %f, %f", player->tecs[i].nome,
+                                              player->tecs[i].cost,
+                                              player->tecs[i].valor), 250, 220 + (20 * i), 20, DARKGREEN);
+    }
 }
 
 void Screen_ending_draw()
@@ -192,15 +202,11 @@ void Screen_gameplay_update()
             break;
         case FIGHT:
             curr_dest = curr->lista;
-            currentScreen = ESCOLHEDEST;
-            emCombate*=-1;
+            currentScreen = COMBATE;
+            //emCombate*=-1;
             break;
     }
 
-
-    if (emCombate>0) {
-        currentScreen = COMBATE;
-    }
 }
 
 void Screen_escolhedest_update()
@@ -217,12 +223,42 @@ void Screen_escolhedest_update()
         *curr = Mapa->vertices[curr_dest->chaveDest];
 
         currentScreen = GAMEPLAY;
+
     }
 }
 
 void Screen_combate_update()
 {
+    //printf("COMBATEEEEEE!\n");
+    if(emCombate == 0){
+        free(foe);
+        foe = criaInimigoRng(player->lvl + floor(rand() * 2));
+        emCombate = 1;
+    }
 
+
+    printf("vida: %f", foe->hp);
+
+    if(foe->hp <= 0){
+        currentScreen = ESCOLHEDEST;
+        emCombate = 0;
+    }
+
+    if(player->hp <= 0){
+        currentScreen = ENDING;
+        emCombate = 0;
+    }
+
+    if(IsKeyPressed(KEY_ENTER)){
+        usage(tec_selec, player, foe);
+        AIusage(foe, player);
+        turnPass(foe, player);
+    }
+
+    if(IsKeyPressed(KEY_UP)){
+        tec_selec++;
+        tec_selec = tec_selec % 5;
+    }
 }
 
 void Screen_ending_update()

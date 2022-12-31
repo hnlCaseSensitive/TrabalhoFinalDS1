@@ -77,7 +77,8 @@ ArestaGrafo* curr_dest;
 // Flags
 int jogadorExiste = 0;
 int menuArmas = -1;
-int emCombate = -1;
+int emCombate = 0;
+int tec_selec = 0;
 
 
 // ================= CORES =====================

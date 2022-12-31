@@ -13,6 +13,10 @@ jogador* criaJogador(void){
     pj->stm = 50;
     pj->max_stm = 50;
 
+    for(int i = 0; i < 5; i++){
+        pj->tecs[i] = criaSkillRng();
+    }
+
     return pj;
 }
 
@@ -37,7 +41,7 @@ Inimigo* criaInimigoRng(int lvl){
     Inimigo* rando = (Inimigo*)malloc(sizeof(Inimigo));
 
     for(int i = 0; i < 29; i++){
-        name[i] = floor(rand() * 26) + 97;
+        name[i] = floor(rand() % 26) + 97;
     }
     name[29] = '\0';
 
@@ -45,7 +49,7 @@ Inimigo* criaInimigoRng(int lvl){
     rando->lvl = lvl;
     rando->max_hp = lvl * 100;
     rando->hp = rando->max_hp;
-    rando->max_stm = lvl * 500 * rand();
+    rando->max_stm = rand() % (lvl * 50);
     rando->tec = criaSkillRng();
 
     return rando;
@@ -54,8 +58,8 @@ Inimigo* criaInimigoRng(int lvl){
 
 skill criaSkillRng(void){
     skill tec;
-    tec.cost = floor(rand() * 10);
-    tec.valor = floor(rand() * 100);
+    tec.cost = floor(rand() % 10);
+    tec.valor = floor(rand() % 50) + 1;
     strcpy(tec.nome, "skill rng");
     tec.self_type = DMG;
 
