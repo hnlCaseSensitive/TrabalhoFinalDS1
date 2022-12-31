@@ -8,13 +8,12 @@
 - [ ] Criação de menus.
 - -> [ ] Tela de combate
 - -> [ ] Main menu
-- -> [ ] Criação de personagem (?);
 
 ##COMBATE:
 
-- [ ] Criação de skills;
-- [ ] Terminar a logica entre skills;
-- [ ] Implementar IA para inimigos;
+- [x] Criação de skills;
+- [x] Terminar a logica entre skills;
+- [x] Implementar IA para inimigos;
 
 ##MAPA:
 
