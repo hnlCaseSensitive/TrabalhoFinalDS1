@@ -22,11 +22,17 @@ typedef struct bag{
 } bag;
 
 typedef struct {
+    char nome[30];
+    int mult, base_val;
+} weap;
+
+typedef struct {
     char name[30];
     float hp, stm, max_hp, max_stm;
     int lvl, xp;
     skill tecs[5];
     bag* items;
+    weap arma;
 } jogador;
 
 typedef struct{
@@ -46,11 +52,15 @@ Inimigo* criaInimigoRng(int lvl);
 
 skill criaSkillRng(void);
 
-void usage(int selected, jogador* j, Inimigo* i);
+void usage(skill curr, jogador* j, Inimigo* i);
 
 void AIusage(Inimigo* i, jogador* j);
 
 void turnPass(Inimigo* i, jogador* j);
+
+weap criaWeapRng(void);
+
+void itemUsage(bag* b, jogador* j, Inimigo* i);
 
 #endif
 

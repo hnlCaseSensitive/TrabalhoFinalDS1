@@ -250,7 +250,7 @@ void Screen_combate_update()
     }
 
     if(IsKeyPressed(KEY_ENTER)){
-        usage(tec_selec, player, foe);
+        usage(player->tecs[tec_selec], player, foe);
         AIusage(foe, player);
         turnPass(foe, player);
     }

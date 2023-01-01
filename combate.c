@@ -13,6 +13,8 @@ jogador* criaJogador(void){
     pj->stm = 50;
     pj->max_stm = 50;
 
+    pj->arma = criaWeapRng();
+
     for(int i = 0; i < 5; i++){
         pj->tecs[i] = criaSkillRng();
     }
@@ -66,8 +68,17 @@ skill criaSkillRng(void){
     return tec;
 }
 
-void usage(int selected, jogador* j, Inimigo* i){
-    skill curr = j->tecs[selected];
+void usage(skill curr, jogador* j, Inimigo* i){
+    if(curr.self_type == ITEM){
+        if(curr.valor > 0){
+            curr.self_type = HEAL;
+        }else{
+            curr.self_type = DMG;
+        }
+    }else{
+        curr.cost *= j->arma.mult;
+        curr.valor *= j->arma.mult;
+    }
 
     if(j->stm < curr.cost){
         return;
@@ -96,4 +107,34 @@ void AIusage(Inimigo* i, jogador* j){
 
     j->hp -= i->tec.valor;
     i->stm -= i->tec.cost;
+}
+
+weap criaWeapRng(void){
+    weap wep;
+
+    for(int i = 0; i < 29; i++){
+        wep.nome[i] = floor(rand() % 26) + 97;
+    }
+
+    wep.base_val = (rand() % 25) + 9;
+    wep.mult = (rand() % 3) + 1;
+
+    return wep;
+}
+
+void itemUsage(bag* b, jogador* j, Inimigo* i){
+    bag* aux = j->items;
+    if(j->items == b){
+        j->items = b->next;
+    }else{
+        while(aux->next != b && aux->next != NULL){
+            aux = aux->next;
+        }
+        aux->next = b->next;
+    }
+
+    b->info.cost = 0;
+    usage(b->info, j, i);
+
+    free(b);
 }
