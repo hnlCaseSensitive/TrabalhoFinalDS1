@@ -53,6 +53,10 @@ Inimigo* criaInimigoRng(int lvl){
     rando->hp = rando->max_hp;
     rando->max_stm = rand() % (lvl * 50);
     rando->tec = criaSkillRng();
+    if(rando->tec.self_type == HEAL){
+        rando->tec.self_type = DMG;
+        rando->tec.valor *= -1;
+    }
 
     return rando;
 
@@ -61,9 +65,14 @@ Inimigo* criaInimigoRng(int lvl){
 skill criaSkillRng(void){
     skill tec;
     tec.cost = floor(rand() % 10);
-    tec.valor = floor(rand() % 50) + 1;
+    tec.valor = floor(rand() % 60) - 39;
     strcpy(tec.nome, "skill rng");
-    tec.self_type = DMG;
+
+    if(tec.valor > 0){
+        tec.self_type = HEAL;
+    }else{
+        tec.self_type = DMG;
+    }
 
     return tec;
 }
@@ -90,7 +99,7 @@ void usage(skill curr, jogador* j, Inimigo* i){
             j->hp = j->max_hp;
         }
     }else{
-        i->hp -= curr.valor;
+        i->hp += curr.valor;
     }
     j->stm -= curr.cost;
 }
@@ -105,7 +114,7 @@ void AIusage(Inimigo* i, jogador* j){
         return;
     }
 
-    j->hp -= i->tec.valor;
+    j->hp += i->tec.valor;
     i->stm -= i->tec.cost;
 }
 
