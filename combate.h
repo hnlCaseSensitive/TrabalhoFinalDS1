@@ -62,5 +62,11 @@ weap criaWeapRng(void);
 
 void itemUsage(bag* b, jogador* j, Inimigo* i);
 
+skill getSkillFromFile(void);
+
+Inimigo* getInimigoFromFile(void);
+
+weap getWeapFromFile(void);
+
 #endif
 

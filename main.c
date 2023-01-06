@@ -242,6 +242,7 @@ void Screen_combate_update()
     if(foe->hp <= 0){
         currentScreen = ESCOLHEDEST;
         emCombate = 0;
+        free(foe);
     }
 
     if(player->hp <= 0){
