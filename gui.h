@@ -3,7 +3,7 @@
 
 #include "combate.h"
 
-typedef enum GameScreen { LOGO = 0, TITLE, GAMEPLAY,COMBATE, ITEM_ESPECIAL, ENDING, ESCOLHEDEST} GameScreen;
+typedef enum GameScreen { LOGO = 0, TITLE, GAMEPLAY,COMBATE, ITEM_SCREEN, ENDING, ESCOLHEDEST} GameScreen;
 typedef enum ArmaSelection {ARMA1=0, ARMA2, ARMA3, ARMA4} ArmaSelection;
 
 
@@ -61,6 +61,9 @@ void    Screen_ending_update();
 void    Screen_ending_draw();
 void    Screen_ending_unload();
 int     Screen_ending_end();
+
+void    Screen_item_update();
+void    Screen_item_draw();
 
 
 /* ===================================

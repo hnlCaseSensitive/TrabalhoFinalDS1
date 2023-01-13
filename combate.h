@@ -52,6 +52,8 @@ Inimigo* criaInimigoRng(int lvl);
 
 skill criaSkillRng(void);
 
+void addRngItem(jogador* j);
+
 void usage(skill curr, jogador* j, Inimigo* i);
 
 void AIusage(Inimigo* i, jogador* j);
@@ -62,11 +64,11 @@ weap criaWeapRng(void);
 
 void itemUsage(bag* b, jogador* j, Inimigo* i);
 
-skill getSkillFromFile(void);
+//skill getSkillFromFile(void);
 
-Inimigo* getInimigoFromFile(void);
+//Inimigo* getInimigoFromFile(void);
 
-weap getWeapFromFile(void);
+//weap getWeapFromFile(void);
 
 #endif
 

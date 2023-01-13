@@ -115,6 +115,8 @@ void Screen_gameplay_draw()
             DrawTexture(heal, 0, 0, WHITE);
         }else if(curr->tipo == FIGHT){
             currentScreen = COMBATE;
+        }else if(curr->tipo == ITEM_SCREEN){
+            DrawText("item something", 50, 50, 50, RED);
         }
 
         if(curr->tipo != END){

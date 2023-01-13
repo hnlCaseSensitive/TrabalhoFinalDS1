@@ -147,3 +147,14 @@ void itemUsage(bag* b, jogador* j, Inimigo* i){
 
     free(b);
 }
+
+void addRngItem(jogador* j){
+    bag* item = (bag*)malloc(sizeof(bag));
+
+    item->info = criaSkillRng();
+    item->info.cost = 0;
+
+    item->next = j->items;
+    j->items = item;
+
+}
