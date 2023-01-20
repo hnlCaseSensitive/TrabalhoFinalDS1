@@ -2,19 +2,19 @@
 #include "combate.h"
 #include <string.h>
 
-
+/*
 
 void criaJogador(Player *player, Status *status)
 {
     player->vidaAtual = 100;
     player->vidaMaxima = 100;
     player->armaAtual.tipoDano = DESARMADO;
-    status->armaEquipada = "Desarmado"; 
+    status->armaEquipada = "Desarmado";
 }
 
 void selecionaItem(int input, Player *player)
 {
-    
+
     switch (input){
 
     case 0:
@@ -40,3 +40,4 @@ void selecionaItem(int input, Player *player)
     }
     printf("player->itemespecial: %s\n", player->itemEspecial);
 }
+*/

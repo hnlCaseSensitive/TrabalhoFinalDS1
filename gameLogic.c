@@ -38,7 +38,7 @@ int findKey(GrafoLA* grafo, int tipo){
 void criaCaminhos(GrafoLA* grafo){
     srand(time(NULL));
 
-    int chave1 = 0, chave2 = rand() % grafo->numVertices;
+    int chave1 = 0, chave2 = (rand() % (grafo->numVertices - 1))+ 1;
     int end_key = findKey(grafo, END);
     while(grafo->vertices[end_key].pai == -1){
        //printf("%d %d",chave1, chave2);

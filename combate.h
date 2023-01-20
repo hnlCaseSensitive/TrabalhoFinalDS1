@@ -4,67 +4,71 @@
 #include "gameLogic.h"
 
 typedef enum{
-    ACIDO = 0, // Dano extra contra humanos
-    ELETRICO = 1, // Dano extra contra robos
-    PERFURACAO = 2, // Dano extra contra insetos
-    DESARMADO = 3 // Tipo de dano principalmente usado pra interacoes especiais
-} TiposDano;
+    HEALING = 0,
+    DMG = 1,
+    ITEM = 2,
+    SPECIAL
+}tipo;
 
-typedef enum{
-    HUMANO = 0, // Leva mais dano de acido
-    ROBO = 1, // Leva mais dano de eletricidade
-    INSETO = 2 // Leva mais dano de perfura��o
-} TiposInimigo;
+typedef struct {
+    char nome[30];
+    float valor, cost;
+    tipo self_type;
+}skill;
 
-typedef struct template_arma{
-    int dano; // Dano da arma
-    char desc[128]; // Descri��o da arma
-    TiposDano tipoDano; // Tipo de dano que a arma da
-} arma;
+typedef struct bag{
+    skill info;
+    struct bag* next;
+} bag;
 
-typedef struct Player{
-   int vidaMaxima; // O maximo de vida que o jogador pode ter
-   int vidaAtual; // A vida atual do jogador
-   arma armaAtual;
-   char itemEspecial[128]; // Item especial adiquirido no come�o do jogo, guardado em char para ser mais facil ler
+typedef struct {
+    char nome[30];
+    int mult, base_val;
+} weap;
 
+typedef struct {
+    char name[30];
+    float hp, stm, max_hp, max_stm;
+    int lvl, xp;
+    skill tecs[5];
+    bag* items;
+    weap arma;
+} jogador;
 
-} Player;
-
-
-typedef struct Inimigo{
-    int vida; // Vida do inimigo
-    int dano; // Dano que o inimigo da
-    TiposInimigo tipo; // Tipo do inimigo
-    char nome[200];
-    int chancePontoFraco; // Chance do inimigo expor seu ponto fraco (em %)
-    TiposDano vulnerabilidade;
+typedef struct{
+    char name[30];
+    float hp, stm, max_hp, max_stm;
+    int lvl;
+    skill tec;
 } Inimigo;
 
-typedef struct statusCombate {
-    char *textOutputJ;
-    char *textOutputI; //renomear
-    char *armaEquipada;
-} Status;
+jogador* criaJogador(void);
 
-Inimigo *sorteiaInimigo();
+void destroiLista(bag* b);
 
-void combate(Player* player, Inimigo *inimigo);
+void destroiJogador(jogador* j);
 
-void escolheArma(Player *player, int arma, Status *status);
+Inimigo* criaInimigoRng(int lvl);
 
-void ataque(Player*, Inimigo*);
+skill criaSkillRng(void);
 
-void turnoJogador(Player *player, Inimigo *inimigo, Status *status);
+void addRngItem(jogador* j);
 
-void turnoInimigo(Player *player, Inimigo *inimigo, Status *status);
+void usage(skill curr, jogador* j, Inimigo* i);
 
-void output(Status *status, char *text);
+void AIusage(Inimigo* i, jogador* j);
 
-void initArma(Player *);
+void turnPass(Inimigo* i, jogador* j);
 
-void selecionaItem(int input, Player*);
+weap criaWeapRng(void);
 
-void criaJogador(Player*, Status*);
+void itemUsage(bag* b, jogador* j, Inimigo* i);
+
+//skill getSkillFromFile(void);
+
+//Inimigo* getInimigoFromFile(void);
+
+//weap getWeapFromFile(void);
+
 #endif
 

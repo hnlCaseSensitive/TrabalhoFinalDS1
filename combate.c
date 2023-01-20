@@ -1,154 +1,160 @@
+#include "combate.h"
 #include "gameLogic.h"
-#include <string.h>
-#include <unistd.h>
+#include <math.h>
 
-Inimigo* sorteiaInimigo(){
-    Inimigo *aux = (Inimigo*) malloc(sizeof(Inimigo));
-    // Sortei um numero de 1 a 100
-    int sorteio = 0;
+jogador* criaJogador(void){
+    jogador* pj = (jogador*) malloc(sizeof(jogador));
 
-    srand(time(NULL));
+    pj->hp = 100;
+    pj->max_hp = 100;
+    pj->xp = 0;
+    pj->lvl = 1;
+    strcpy(pj->name, "player 1");
+    pj->stm = 50;
+    pj->max_stm = 50;
 
-    sorteio = rand() % 100;
+    pj->arma = criaWeapRng();
 
-    printf ("sorteio: %i", sorteio);
-    // E seleciona um inimigo baseado no numero sorteado
-    if (sorteio >= 75){
-        aux->dano = 10;
-        aux->vida = 100;
-        aux->tipo = INSETO;
-        strcpy(aux->nome, "inseto generico");
-        aux->chancePontoFraco = 35;
-        aux->vulnerabilidade = PERFURACAO;
+    for(int i = 0; i < 5; i++){
+        pj->tecs[i] = criaSkillRng();
     }
-    else if (sorteio > 50){
-        aux->dano = 10;
-        aux->vida = 100;
-        aux->tipo = ROBO;
-        strcpy(aux->nome, "robo generico");
-        aux->chancePontoFraco = 35;
-        aux->vulnerabilidade = ELETRICO;
-    }
-    else {
-        aux->dano = 10;
-        aux->vida = 100;
-        aux->tipo = HUMANO;
-        strcpy(aux->nome, "humano generico");
-        aux->chancePontoFraco = 35;
-        aux->vulnerabilidade = ACIDO;
-    }
-            printf("Vida:%d\n", aux->vida);
-    return aux;
+
+    return pj;
 }
 
-void escolheArma(Player *player, int escolha, Status *status)
-{
-    player->armaAtual.tipoDano = escolha;
-
-    switch(escolha)
-    {
-        case ACIDO:
-        {
-            status->armaEquipada = "Acido";
-        } break;
-        case ELETRICO:
-        {
-            status->armaEquipada = "Eletrico";
-        } break;
-        case PERFURACAO:
-        {
-            status->armaEquipada = "Perfuracao";
-        } break;
-        case DESARMADO:
-        {
-            status->armaEquipada = "Desarmado";
-        } break;
+void destroiLista(bag* b){
+    while(b != NULL){
+        bag* next = b->next;
+        free(b);
+        b = next;
     }
+}
+
+
+void destroiJogador(jogador* j){
+    bag* temp = j->items;
+    destroiLista(temp);
+    free(j);
+}
+
+Inimigo* criaInimigoRng(int lvl){
+    char name[30];
+
+    Inimigo* rando = (Inimigo*)malloc(sizeof(Inimigo));
+
+    for(int i = 0; i < 29; i++){
+        name[i] = floor(rand() % 26) + 97;
+    }
+    name[29] = '\0';
+
+    strcpy(rando->name, name);
+    rando->lvl = lvl;
+    rando->max_hp = lvl * 100.0;
+    rando->hp = rando->max_hp;
+    rando->max_stm = rand() % (lvl * 50);
+    rando->tec = criaSkillRng();
+    if(rando->tec.self_type == HEAL){
+        rando->tec.self_type = DMG;
+        rando->tec.valor *= -1;
+    }
+
+    return rando;
 
 }
 
-//inicializa armas do jogador
-void initArma(Player *player)
-{
-    int sorteio = 0;
-    player->armaAtual.dano = 0;
-        switch (player->armaAtual.dano)
-    {
-        case ACIDO:
-            sorteio = (rand() % (30 - 5 + 1)) + 10;
-            player->armaAtual.dano = 5 + sorteio;
-            break;
-        case ELETRICO:
-            sorteio = (rand() % (30 - 5 + 1)) + 10;
-            player->armaAtual.dano = 5 + sorteio;
-            break;
-        case PERFURACAO:
-            sorteio = (rand() % (30 - 5 + 1)) + 10;
-            player->armaAtual.dano = 5 + sorteio;
-            break;
-        case DESARMADO:
-            sorteio = (rand() % (5 + 1));
-            player->armaAtual.dano = 1 + sorteio;
-    }
-}
-// //int num = (rand() % (upper - lower + 1)) + lower;
+skill criaSkillRng(void){
+    skill tec;
+    tec.cost = floor(rand() % 10);
+    tec.valor = floor(rand() % 60) - 39;
+    strcpy(tec.nome, "skill rng");
 
-void turnoJogador(Player *player, Inimigo *inimigo, Status *status)
-{
-    initArma(player); //tirar daqui dps
+    if(tec.valor > 0){
+        tec.self_type = HEAL;
+    }else{
+        tec.self_type = DMG;
+    }
 
-    printf("Turno jogador\n");
-    if (inimigo->vulnerabilidade==player->armaAtual.tipoDano) {
-        inimigo->vida -= (player->armaAtual.dano + 15);
-        //output(status, "Jogador fez dano a mais");
-        status->textOutputJ = "jogador fez dano a mais";
-        //return status;
-        //printf("Status->texoutput:%s\n", status->textOutput);
-        //return "Jogador fez de dano";
-    }
-    else {
-        inimigo->vida -= player->armaAtual.dano;
-        status->textOutputJ = "jogador fez dano";
-        //printf("Status->texoutput:%s\n", status->textOutput);
-        //return status;
-    }
-        //status->textOutput = "jogador nfez nada";
+    return tec;
 }
 
-void turnoInimigo(Player *player, Inimigo *inimigo, Status *status)
-{
-    int sorteio = 0;
-    int danoAdd = 0; // dano especial
-    switch (inimigo->tipo)
-    {
-        case HUMANO: // leva mais dano de acido, chances de roubar arma do jogador
-            printf("inimigo humano\n");
-            srand(time(NULL));
-            sorteio = rand() % 50;
-            if (sorteio==45) {
-                printf("Arma do jogador roubada!\n");
-                escolheArma(player,DESARMADO,status);
-            }
-            // fazer chances de errar ataque
-            player->vidaAtual -= inimigo->dano;
-            break;
-        case ROBO: // leva mais dano de eletricidade
-            printf("inimigo robo\n");
-            break;
-        case INSETO: // perfurado
-            printf("inimigo inseto\n");
-            srand(time(NULL));
-            sorteio = rand() % 50;
-            if (sorteio%2==0) {
-                printf("mordida de inseto!+ 1 dano\n");
-                danoAdd += 1;
-            }
-            break;
-
+void usage(skill curr, jogador* j, Inimigo* i){
+    if(curr.self_type == ITEM){
+        if(curr.valor > 0){
+            curr.self_type = HEAL;
+        }else{
+            curr.self_type = DMG;
+        }
+    }else{
+        curr.cost *= j->arma.mult;
+        curr.valor *= j->arma.mult;
     }
-    printf("inimigo atacou!\n");
-    player->vidaAtual -= inimigo->dano + danoAdd;
-    printf("vida do jogador:%d\n", player->vidaAtual);
-    status->textOutputI = "inimigo atacou";
+
+    if(j->stm < curr.cost){
+        return;
+    }
+
+    if(curr.self_type == HEAL){
+        j->hp += curr.valor;
+        if(j->hp > j->max_hp){
+            j->hp = j->max_hp;
+        }
+    }else{
+        i->hp += curr.valor;
+    }
+    j->stm -= curr.cost;
 }
 
+void turnPass(Inimigo* i, jogador* j){
+    i->stm += i->max_stm / 10;
+    j->stm += j->max_stm / 10;
+}
+
+void AIusage(Inimigo* i, jogador* j){
+    if(i->stm < i->tec.cost){
+        return;
+    }
+
+    j->hp += i->tec.valor;
+    i->stm -= i->tec.cost;
+}
+
+weap criaWeapRng(void){
+    weap wep;
+
+    for(int i = 0; i < 29; i++){
+        wep.nome[i] = floor(rand() % 26) + 97;
+    }
+
+    wep.base_val = (rand() % 25) + 9;
+    wep.mult = (rand() % 3) + 1;
+
+    return wep;
+}
+
+void itemUsage(bag* b, jogador* j, Inimigo* i){
+    bag* aux = j->items;
+    if(j->items == b){
+        j->items = b->next;
+    }else{
+        while(aux->next != b && aux->next != NULL){
+            aux = aux->next;
+        }
+        aux->next = b->next;
+    }
+
+    b->info.cost = 0;
+    usage(b->info, j, i);
+
+    free(b);
+}
+
+void addRngItem(jogador* j){
+    bag* item = (bag*)malloc(sizeof(bag));
+
+    item->info = criaSkillRng();
+    item->info.cost = 0;
+
+    item->next = j->items;
+    j->items = item;
+
+}

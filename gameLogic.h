@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 #include "grafo_la.h"
 #include "combate.h"
@@ -23,7 +24,5 @@ void criaCaminhos(GrafoLA* grafo);
 
 //funcao que acha a chave do primeiro nodo que é do tipo passado.
 int findKey(GrafoLA* grafo, int tipo);
-
-//MONSTROS
 
 #endif
